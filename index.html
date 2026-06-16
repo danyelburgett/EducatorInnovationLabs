@@ -362,33 +362,7 @@
         <section id="generator" class="mb-16 scroll-mt-24">
             <div class="text-center mb-10">
                 <h3 class="text-3xl font-extrabold text-slate-900">The CLEAR Prompt Creator Workspace</h3>
-                <p class="text-slate-600 mt-2 max-w-2xl mx-auto">Fill in each component below to automatically construct a professional, hyper-targeted administrative prompt. Use EIL's pre-made suggestions, or harness Gemini AI to generate standard CLEAR structures on the fly.</p>
-            </div>
-
-            <!-- New AI Fast-Track Wizard Segment -->
-            <div class="max-w-7xl mx-auto mb-8">
-                <div class="bg-gradient-to-r from-indigo-950 to-indigo-900 rounded-3xl p-6 shadow-xl border border-indigo-800/80 relative overflow-hidden text-white">
-                    <div class="absolute -top-12 -right-12 w-48 h-48 bg-[#FB6F07]/10 rounded-full blur-3xl"></div>
-                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
-                        <div class="space-y-2 max-w-2xl">
-                            <span class="px-2.5 py-1 bg-[#FB6F07]/20 text-[#FFD39C] rounded-full text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5">
-                                <i class="fa-solid fa-bolt"></i> EIL Prompt Wizard
-                            </span>
-                            <h4 class="text-lg font-extrabold">Instant Goal-to-CLEAR Creator</h4>
-                            <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                                Don't have a structured prompt ready? Describe your administrative objective or raw task idea below, and Gemini AI will analyze, map, and write every single CLEAR parameter for you!
-                            </p>
-                        </div>
-                        <div class="w-full md:w-auto flex-shrink-0">
-                            <div class="flex flex-col sm:flex-row gap-2.5">
-                                <input type="text" id="ai-wizard-goal" class="w-full md:w-80 rounded-xl bg-indigo-950/80 border border-indigo-800 text-white placeholder-slate-400 p-3 text-sm focus:ring-2 focus:ring-[#FB6F07] focus:outline-none transition" placeholder="e.g. Design a parent newsletter about extreme weather school closings...">
-                                <button onclick="aiGenerateClearFromGoal()" id="wizard-btn" class="px-5 py-3 bg-[#FB6F07] hover:bg-[#d65b00] text-white font-extrabold rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5 whitespace-nowrap">
-                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Build CLEAR Elements
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <p class="text-slate-600 mt-2 max-w-2xl mx-auto">Fill in each component below to automatically construct a professional, hyper-targeted administrative prompt. Your draft updates are saved automatically so you won't lose your work.</p>
             </div>
 
             <!-- Workspace Columns Layout -->
@@ -546,38 +520,14 @@
 
                         <!-- Action Buttons -->
                         <div class="space-y-3">
-                            <div class="w-full">
-                                <button onclick="copyToClipboard()" class="w-full py-3 bg-gradient-to-r from-[#FFD39C] to-[#E5A95E] text-indigo-950 hover:from-[#FFE0B8] hover:to-[#FFD39C] font-bold rounded-xl text-sm transition shadow-lg shadow-[#FFD39C]/10 flex items-center justify-center">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <button onclick="copyToClipboard()" class="py-3.5 bg-gradient-to-r from-[#FFD39C] to-[#E5A95E] text-indigo-950 hover:from-[#FFE0B8] hover:to-[#FFD39C] font-bold rounded-xl text-sm transition shadow-lg shadow-[#FFD39C]/10 flex items-center justify-center">
                                     <i class="fa-solid fa-copy mr-2"></i> Copy Prompt
                                 </button>
-                            </div>
-                            
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                <button onclick="aiEnhancePrompt()" id="enhance-btn" class="py-2.5 bg-indigo-900 hover:bg-indigo-850 text-[#FFD39C] hover:text-white font-semibold rounded-xl text-xs transition border border-indigo-800 flex items-center justify-center">
-                                    <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> AI Enhance
+                                <button onclick="downloadPromptFile()" class="py-3.5 bg-indigo-900 hover:bg-indigo-800 text-[#FFD39C] hover:text-white font-bold rounded-xl text-sm transition border border-indigo-800/80 flex items-center justify-center">
+                                    <i class="fa-solid fa-file-arrow-down mr-2"></i> Download .txt
                                 </button>
-                                <button onclick="gradeClearPrompt()" id="grade-btn" class="py-2.5 bg-indigo-900 hover:bg-indigo-850 text-[#FFD39C] hover:text-white font-semibold rounded-xl text-xs transition border border-indigo-800 flex items-center justify-center">
-                                    <i class="fa-solid fa-ranking-star mr-1.5"></i> Grade Prompt
-                                </button>
-                                <a href="#sandbox" onclick="sendToSandbox()" class="py-2.5 bg-indigo-900 hover:bg-indigo-850 text-slate-300 hover:text-white font-semibold rounded-xl text-xs transition border border-indigo-800 flex items-center justify-center text-center">
-                                    <i class="fa-solid fa-terminal mr-1.5 text-[#FFD39C]"></i> Run Sandbox
-                                </a>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Dynamic Diagnostic Grader Report Panel (Hidden by default, shown when graded) -->
-                    <div id="grader-panel" class="hidden bg-white rounded-3xl p-6 shadow-xl border border-slate-200 relative overflow-hidden transition-all duration-300">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-                            <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                                <i class="fa-solid fa-clipboard-check text-[#FB6F07]"></i> CLEAR Diagnostic Audit
-                            </h4>
-                            <button onclick="document.getElementById('grader-panel').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">
-                                <i class="fa-solid fa-xmark text-sm"></i>
-                            </button>
-                        </div>
-                        <div id="grader-report-content" class="space-y-4 text-xs leading-relaxed text-slate-700">
-                            <!-- Report details populate dynamically -->
                         </div>
                     </div>
 
@@ -691,55 +641,6 @@
             </div>
         </section>
 
-        <section id="sandbox" class="mb-16 bg-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 scroll-mt-24">
-            <div class="max-w-4xl mx-auto">
-                <div class="flex items-center space-x-3 mb-6">
-                    <div class="w-10 h-10 rounded-xl bg-[#FFD39C] text-slate-950 flex items-center justify-center shadow-lg shadow-[#FFD39C]/20">
-                        <i class="fa-solid fa-terminal text-lg"></i>
-                    </div>
-                    <div>
-                        <span class="text-xs font-semibold text-[#FFD39C] uppercase tracking-widest block">Live LLM Testing Environment</span>
-                        <h3 class="text-2xl font-extrabold text-white">The Administrator's AI Sandbox</h3>
-                    </div>
-                </div>
-
-                <p class="text-slate-300 text-sm mb-6 leading-relaxed">
-                    Ready to test your engineered CLEAR prompt? Paste or type it below to generate content instantly utilizing the <span class="text-[#FFD39C] font-semibold">Gemini 3-Flash</span> model. Watch how specific prompt elements influence the relevance and speed of the AI's response.
-                </p>
-
-                <div class="space-y-4">
-                    <!-- Text Area for sandbox input -->
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-400 tracking-wider mb-2">Compiled Prompt Ready for Execution</label>
-                        <textarea id="sandbox-prompt" rows="5" class="w-full bg-slate-950 text-indigo-100 rounded-2xl border border-slate-800 p-4 text-xs font-mono focus:ring-2 focus:ring-[#FFD39C] focus:outline-none transition" placeholder="Draft your prompt above and click 'Run in AI Sandbox' or write here to test..."></textarea>
-                    </div>
-
-                    <!-- CTA Actions -->
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div class="flex items-center space-x-2 text-xs text-slate-400">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#FFD39C] inline-block animate-pulse"></span>
-                            <span>Powered by Gemini 3.1 Flash AI Platform</span>
-                        </div>
-                        <button onclick="executeSandboxPrompt()" id="sandbox-run-btn" class="px-6 py-3 bg-gradient-to-r from-[#FFD39C] to-[#E5A95E] text-[#092B62] hover:from-[#FFE0B8] hover:to-[#FFD39C] font-bold rounded-xl text-sm transition-all shadow-lg shadow-[#FFD39C]/20 flex items-center justify-center">
-                            <i class="fa-solid fa-play mr-2"></i> Run Prompt & View Output
-                        </button>
-                    </div>
-
-                    <!-- Output window -->
-                    <div class="mt-6 border border-slate-800 bg-slate-950/80 rounded-2xl p-5 overflow-hidden min-h-[150px] relative">
-                        <div class="flex items-center justify-between text-xs text-slate-400 border-b border-slate-900 pb-3 mb-3">
-                            <span>Gemini Sandbox Response</span>
-                            <button onclick="copySandboxOutput()" class="hover:text-white transition flex items-center">
-                                <i class="fa-solid fa-copy mr-1"></i> Copy Response
-                            </button>
-                        </div>
-                        <div id="sandbox-output" class="text-slate-200 text-sm space-y-4 font-sans leading-relaxed max-h-[500px] overflow-y-auto pr-2">
-                            <span class="text-slate-500 italic text-xs">Run a prompt above to view interactive model output inside this workspace...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <!-- Footer Section -->
@@ -819,6 +720,7 @@
             const targetTextArea = document.getElementById(`input-${letter}`);
             targetTextArea.value = dataText;
             compilePrompt();
+            saveDraftToLocalStorage();
             showToast(`Injected ${letter} element directly to creator workspace!`, 'success');
             
             // Highlight target workspace field
@@ -887,6 +789,7 @@
             if (rVal) promptStr += `[RESULT FORMAT]\n${rVal}`;
 
             previewEl.textContent = promptStr;
+            saveDraftToLocalStorage();
         }
 
         // Copy Compiled Prompt to Clipboard with robust iframe fallback selection
@@ -921,14 +824,56 @@
             document.body.removeChild(textarea);
         }
 
-        function sendToSandbox() {
+        function downloadPromptFile() {
             const text = document.getElementById('prompt-preview').textContent;
             if (!text || text.includes('Start typing in the fields')) {
-                showToast("Compile a prompt first before transferring it to the sandbox.", "warning");
+                showToast("Compile a prompt first before attempting download.", "warning");
                 return;
             }
-            document.getElementById('sandbox-prompt').value = text;
-            showToast("Transferred prompt directly to Sandbox console! Scroll down to test.", "success");
+            try {
+                const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "EIL_CLEAR_Prompt_Template.txt";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast("Downloaded prompt successfully as .txt file!", "success");
+            } catch (e) {
+                showToast("File generation failed in this browser context.", "error");
+            }
+        }
+
+        function saveDraftToLocalStorage() {
+            const draft = {
+                c: document.getElementById('input-C').value,
+                l: document.getElementById('input-L').value,
+                e: document.getElementById('input-E').value,
+                a: document.getElementById('input-A').value,
+                r: document.getElementById('input-R').value
+            };
+            localStorage.setItem('eil_clear_prompt_draft', JSON.stringify(draft));
+        }
+
+        function loadDraftFromLocalStorage() {
+            const savedDraft = localStorage.getItem('eil_clear_prompt_draft');
+            if (savedDraft) {
+                try {
+                    const draft = JSON.parse(savedDraft);
+                    let hasContent = false;
+                    if (draft.c) { document.getElementById('input-C').value = draft.c; hasContent = true; }
+                    if (draft.l) { document.getElementById('input-L').value = draft.l; hasContent = true; }
+                    if (draft.e) { document.getElementById('input-E').value = draft.e; hasContent = true; }
+                    if (draft.a) { document.getElementById('input-A').value = draft.a; hasContent = true; }
+                    if (draft.r) { document.getElementById('input-R').value = draft.r; hasContent = true; }
+                    if (hasContent) {
+                        compilePrompt();
+                        showToast("Restored your active prompt draft from previous session!", "info");
+                    }
+                } catch (e) {
+                    console.error("Draft parsing failed.", e);
+                }
+            }
         }
 
         function resetWorkspace() {
@@ -936,6 +881,7 @@
                 document.getElementById(`input-${l}`).value = '';
             });
             compilePrompt();
+            localStorage.removeItem('eil_clear_prompt_draft');
             showToast("Cleared Creator Workspace successfully.", "info");
         }
 
@@ -1016,424 +962,11 @@
             }, 4500);
         }
 
-        const apiKey = ""; // Left blank so Canvas automatically injects the Gemini key in runtime.
-        const modelName = "gemini-3-flash-preview";
-
-        // Exponential Backoff helper logic for API resilience
-        async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
-            try {
-                const response = await fetch(url, options);
-                if (!response.ok) {
-                    if (response.status === 429 && retries > 0) {
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        return fetchWithRetry(url, options, retries - 1, delay * 2);
-                    }
-                    throw new Error(`HTTP Error Status: ${response.status}`);
-                }
-                return response;
-            } catch (error) {
-                if (retries > 0) {
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    return fetchWithRetry(url, options, retries - 1, delay * 2);
-                }
-                throw error;
-            }
-        }
-
-        // AI WIZARD: Uses Gemini API to build complete CLEAR elements from a simple administrative goal statement
-        async function aiGenerateClearFromGoal() {
-            const goalText = document.getElementById('ai-wizard-goal').value.trim();
-            if (!goalText) {
-                showToast("Please enter a simple goal statement first!", "warning");
-                return;
-            }
-
-            const wizardBtn = document.getElementById('wizard-btn');
-            wizardBtn.disabled = true;
-            wizardBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generating...`;
-
-            const systemInstructionText = `You are a world-class prompt engineer who specializes in professional K-12 school administration. 
-Take the user's raw goal and automatically decompose and draft the five individual elements of the CLEAR Prompt Framework:
-- Context (C): Construct a realistic, highly professional school setting and administrative background.
-- Lens (L): Establish an expert consultant, advisor, or leader persona specifically mapped to address this challenge.
-- Expectation (E): Define the exact deliverables, using action-driven verbs and clear leadership metrics.
-- Audience (A): Describe who will receive, read, or participate in the final output (teachers, parents, board members, etc.).
-- Result Format (R): Specify the structural parameters, layout directions, and logical constraints (e.g., Markdown table, professional email template with clear headings, facilitation guide).
-
-Respond strictly using this text layout with block boundary indicators, and NO conversational preambles or follow-on text:
----C---
-{Drafted Context text}
----L---
-{Drafted Lens text}
----E---
-{Drafted Expectation text}
----A---
-{Drafted Audience text}
----R---
-{Drafted Result Format text}`;
-
-            try {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-                const payload = {
-                    contents: [{ parts: [{ text: `Administrative Goal: "${goalText}"` }] }],
-                    systemInstruction: { parts: [{ text: systemInstructionText }] }
-                };
-
-                const response = await fetchWithRetry(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-                const aiOutput = result?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (aiOutput) {
-                    parseAndInjectWizardElements(aiOutput);
-                    showToast("Wizard successfully populated your workspace fields with custom CLEAR elements!", "success");
-                } else {
-                    throw new Error("Unable to extract output.");
-                }
-            } catch (err) {
-                console.error(err);
-                showToast("Failed to generate custom CLEAR elements. Please retry.", "error");
-            } finally {
-                wizardBtn.disabled = false;
-                wizardBtn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Build CLEAR Elements`;
-            }
-        }
-
-        // Helper function to extract and map generated elements back to their textareas
-        function parseAndInjectWizardElements(text) {
-            const parts = { 'C': '', 'L': '', 'E': '', 'A': '', 'R': '' };
-            const blocks = text.split(/---([C|L|E|A|R])---/);
-            
-            for (let i = 1; i < blocks.length; i += 2) {
-                const key = blocks[i].trim();
-                const content = blocks[i+1] ? blocks[i+1].trim() : '';
-                if (parts.hasOwnProperty(key)) {
-                    parts[key] = content;
-                }
-            }
-
-            if (parts['C']) document.getElementById('input-C').value = parts['C'];
-            if (parts['L']) document.getElementById('input-L').value = parts['L'];
-            if (parts['E']) document.getElementById('input-E').value = parts['E'];
-            if (parts['A']) document.getElementById('input-A').value = parts['A'];
-            if (parts['R']) document.getElementById('input-R').value = parts['R'];
-
-            compilePrompt();
-        }
-
-        // AI GRADER: Audits the prompt compiled inside the workspace, assigning individual parameter scores and structural feedback
-        async function gradeClearPrompt() {
-            const cVal = document.getElementById('input-C').value.trim();
-            const lVal = document.getElementById('input-L').value.trim();
-            const eVal = document.getElementById('input-E').value.trim();
-            const aVal = document.getElementById('input-A').value.trim();
-            const rVal = document.getElementById('input-R').value.trim();
-
-            if (!cVal && !eVal) {
-                showToast("Write or compile a draft prompt first before running a quality grade!", "warning");
-                return;
-            }
-
-            const gradeBtn = document.getElementById('grade-btn');
-            const graderPanel = document.getElementById('grader-panel');
-            const reportContent = document.getElementById('grader-report-content');
-
-            gradeBtn.disabled = true;
-            gradeBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1.5"></i> Grading...`;
-
-            graderPanel.classList.remove('hidden');
-            reportContent.innerHTML = `
-                <div class="flex items-center justify-center py-6 text-slate-400">
-                    <i class="fa-solid fa-circle-notch animate-spin text-[#FB6F07] text-xl mr-2"></i>
-                    <span>Gemini AI is analyzing framework completeness...</span>
-                </div>
-            `;
-
-            const fullPromptText = `[CONTEXT]: ${cVal}\n[LENS]: ${lVal}\n[EXPECTATION]: ${eVal}\n[AUDIENCE]: ${aVal}\n[RESULT FORMAT]: ${rVal}`;
-
-            const systemGraderInstruction = `You are a world-class prompt evaluation tool for school leaders. 
-Your objective is to grade the provided CLEAR prompt draft and generate an interactive diagnostic report.
-Analyze each parameter and provide an objective score out of 10.
-Assign an overall quality badge based on completeness:
-- Gold Standard (Prompt is exceptionally specific, clear, structured, and complete)
-- Silver Tier (Prompt has strong elements, but is missing fine-grained details)
-- Needs Enrichment (Critical gaps detected, such as missing result format or vague school context)
-
-Format your response strictly as structured, clean HTML elements ready to be inserted directly into a container (DO NOT wrap it in a markdown block, just output raw HTML). Use Tailwind CSS styling. Here is the blueprint you must follow:
-
-<div class="space-y-4">
-    <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
-        <span class="font-bold text-slate-800">Overall Standard Rating:</span>
-        <span class="px-2.5 py-1 text-xs font-bold rounded-full {BADGE_COLOR_CSS}">{RATING_BADGE_NAME}</span>
-    </div>
-    
-    <div class="space-y-2">
-        <h5 class="font-bold text-slate-800">C-L-E-A-R Component Breakdown:</h5>
-        
-        <div class="flex items-center justify-between border-b border-slate-50 pb-1.5 text-xs">
-            <span><strong>C</strong>ontext Rating:</span>
-            <span class="font-semibold text-slate-900">{C_SCORE}/10</span>
-        </div>
-        <div class="flex items-center justify-between border-b border-slate-50 pb-1.5 text-xs">
-            <span><strong>L</strong>ens Rating:</span>
-            <span class="font-semibold text-slate-900">{L_SCORE}/10</span>
-        </div>
-        <div class="flex items-center justify-between border-b border-slate-50 pb-1.5 text-xs">
-            <span><strong>E</strong>xpectation Rating:</span>
-            <span class="font-semibold text-slate-900">{E_SCORE}/10</span>
-        </div>
-        <div class="flex items-center justify-between border-b border-slate-50 pb-1.5 text-xs">
-            <span><strong>A</strong>udience Rating:</span>
-            <span class="font-semibold text-slate-900">{A_SCORE}/10</span>
-        </div>
-        <div class="flex items-center justify-between border-b border-slate-50 pb-1.5 text-xs">
-            <span><strong>R</strong>esult Format Rating:</span>
-            <span class="font-semibold text-slate-900">{R_SCORE}/10</span>
-        </div>
-    </div>
-
-    <div>
-        <h5 class="font-bold text-slate-800 mb-1">Diagnostic Critic Feedback:</h5>
-        <p class="text-xs text-slate-600 mb-2">{ELEMENTS_CRITIQUE_DESCRIPTION}</p>
-        <h5 class="font-bold text-slate-800 mb-1">Actionable Recommendations:</h5>
-        <ul class="list-disc pl-4 space-y-1 text-slate-600">
-            {RECOMMENDATION_LI_ITEMS}
-        </ul>
-    </div>
-</div>`;
-
-            try {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-                const payload = {
-                    contents: [{ parts: [{ text: `Grade prompt parameters:\n${fullPromptText}` }] }],
-                    systemInstruction: { parts: [{ text: systemGraderInstruction }] }
-                };
-
-                const response = await fetchWithRetry(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-                const auditHtml = result?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (auditHtml) {
-                    reportContent.innerHTML = auditHtml;
-                    showToast("Prompt successfully analyzed! Diagnostic scorecard loaded.", "success");
-                    graderPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                } else {
-                    throw new Error("Empty report response.");
-                }
-            } catch (err) {
-                console.error(err);
-                reportContent.innerHTML = `<span class="text-rose-500 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Grade operation failed. Retrying in several seconds...</span>`;
-                showToast("Scorecard generation failed.", "error");
-            } finally {
-                gradeBtn.disabled = false;
-                gradeBtn.innerHTML = `<i class="fa-solid fa-ranking-star mr-1.5"></i> Grade Prompt`;
-            }
-        }
-
-        // AI ENHANCER: Uses Gemini to turn a draft / simple input into a gorgeous CLEAR prompt
-        async function aiEnhancePrompt() {
-            const cVal = document.getElementById('input-C').value.trim();
-            const lVal = document.getElementById('input-L').value.trim();
-            const eVal = document.getElementById('input-E').value.trim();
-            const aVal = document.getElementById('input-A').value.trim();
-            const rVal = document.getElementById('input-R').value.trim();
-
-            if (!cVal && !eVal) {
-                showToast("Please provide at least a simple Context and Expectation to enhance!", "warning");
-                return;
-            }
-
-            const enhanceBtn = document.getElementById('enhance-btn');
-            enhanceBtn.disabled = true;
-            enhanceBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1.5"></i> Enhancing...`;
-
-            const systemPrompt = `You are a world-class prompt engineering specialist at Educator Innovation Labs. Your job is to take a draft prompt or set of parameters from a school leader, and return a beautifully structured prompt strictly engineered according to the CLEAR Framework.
-Format the output EXACTLY using the standard CLEAR headings, with clear, specific, expanded, and professional educational terminology.
-
-Output Format:
-[CONTEXT]
-{detailed expanded setting context based on user's input}
-
-[LENS]
-{highly targeted role design, e.g. educational leader coach, crisis consultant}
-
-[EXPECTATION]
-{detailed output deliverable requirements}
-
-[AUDIENCE]
-{clearly identified stakeholder group}
-
-[RESULT FORMAT]
-{specific structural expectations for output}
-
-Rules:
-1. Preserve the core meaning of the user's input, but expand the vocabulary to sound expert, highly contextualized, and professional.
-2. DO NOT return extra conversational preamble or explanations outside the requested framework format. Only output the final CLEAR prompt text.`;
-
-            const rawPromptContent = `Context provided: ${cVal}\nLens provided: ${lVal}\nExpectations provided: ${eVal}\nAudience provided: ${aVal}\nResult Format provided: ${rVal}`;
-
-            try {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-                const payload = {
-                    contents: [{ parts: [{ text: rawPromptContent }] }],
-                    systemInstruction: {
-                        parts: [{ text: systemPrompt }]
-                    }
-                };
-
-                const response = await fetchWithRetry(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-                const textOutput = result?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (textOutput) {
-                    parseAndApplyEnhancedPrompt(textOutput);
-                    showToast("AI successfully engineered your parameters into a CLEAR prompt!", "success");
-                } else {
-                    throw new Error("Unable to extract response from Gemini API.");
-                }
-
-            } catch (error) {
-                console.error(error);
-                showToast("AI enhancement failed. Please check your network connection.", "error");
-            } finally {
-                enhanceBtn.disabled = false;
-                enhanceBtn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> AI Enhance`;
-            }
-        }
-
-        // Helper parser to feed CLEAR AI-Engineered prompt text back into the form fields
-        function parseAndApplyEnhancedPrompt(text) {
-            const sections = {
-                'CONTEXT': '',
-                'LENS': '',
-                'EXPECTATION': '',
-                'AUDIENCE': '',
-                'RESULT FORMAT': ''
-            };
-
-            let currentSection = null;
-            const lines = text.split('\n');
-
-            lines.forEach(line => {
-                const trimmed = line.trim();
-                if (trimmed.startsWith('[CONTEXT]')) {
-                    currentSection = 'CONTEXT';
-                } else if (trimmed.startsWith('[LENS]')) {
-                    currentSection = 'LENS';
-                } else if (trimmed.startsWith('[EXPECTATION]')) {
-                    currentSection = 'EXPECTATION';
-                } else if (trimmed.startsWith('[AUDIENCE]')) {
-                    currentSection = 'AUDIENCE';
-                } else if (trimmed.startsWith('[RESULT FORMAT]')) {
-                    currentSection = 'RESULT FORMAT';
-                } else if (currentSection && trimmed !== '') {
-                    sections[currentSection] += (sections[currentSection] ? '\n' : '') + trimmed;
-                }
-            });
-
-            if (sections['CONTEXT']) document.getElementById('input-C').value = sections['CONTEXT'];
-            if (sections['LENS']) document.getElementById('input-L').value = sections['LENS'];
-            if (sections['EXPECTATION']) document.getElementById('input-E').value = sections['EXPECTATION'];
-            if (sections['AUDIENCE']) document.getElementById('input-A').value = sections['AUDIENCE'];
-            if (sections['RESULT FORMAT']) document.getElementById('input-R').value = sections['RESULT FORMAT'];
-
-            compilePrompt();
-        }
-
-        // AI SANDBOX: Runs the prompt compiled in prompt-preview or sandbox-prompt in an interactive viewer
-        async function executeSandboxPrompt() {
-            const promptText = document.getElementById('sandbox-prompt').value.trim();
-
-            if (!promptText || promptText.startsWith("Draft your prompt above")) {
-                showToast("Please write or paste a compiled CLEAR prompt in the sandbox console first!", "warning");
-                return;
-            }
-
-            const runBtn = document.getElementById('sandbox-run-btn');
-            const outputEl = document.getElementById('sandbox-output');
-
-            runBtn.disabled = true;
-            runBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-2"></i> Running LLM Model...`;
-            outputEl.innerHTML = `<div class="flex flex-col items-center justify-center py-10 text-slate-400">
-                <i class="fa-solid fa-gears text-3xl animate-spin text-[#FFD39C] mb-3"></i>
-                <span class="text-xs font-semibold uppercase tracking-wider">Executing prompt across Gemini 3.1 Flash Neural Layer...</span>
-            </div>`;
-
-            const systemPrompt = `You are a world-class school administration consultant, coach, and expert crisis partner, acting strictly in accord with the role characteristics defined in the prompt's [LENS] section.
-Process the prompt's instructions perfectly and output directly usable administrative files, agenda roadmaps, letters, or matrices. Support with deep, specific details and robust, localized academic phrasing. Keep tone premium, supportive, highly professional, and compassionate. Use markdown layout tags, bold emphasis, tables, and spacing dynamically to ensure excellent readability.`;
-
-            try {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-                const payload = {
-                    contents: [{ parts: [{ text: promptText }] }],
-                    systemInstruction: {
-                        parts: [{ text: systemPrompt }]
-                    }
-                };
-
-                const response = await fetchWithRetry(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-                const answer = result?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (answer) {
-                    outputEl.innerHTML = formatMarkdown(answer);
-                } else {
-                    throw new Error("Unable to extract output content.");
-                }
-
-            } catch (err) {
-                console.error(err);
-                outputEl.innerHTML = `<span class="text-rose-500 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Sandbox run failed. Ensure your prompt contains valid context parameters and retry execution.</span>`;
-                showToast("Sandbox model execution failed.", "error");
-            } finally {
-                runBtn.disabled = false;
-                runBtn.innerHTML = `<i class="fa-solid fa-play mr-2"></i> Run Prompt & View Output`;
-            }
-        }
-
-        // Tiny local Markdown parser for premium rendering inside sandbox
-        function formatMarkdown(text) {
-            let html = text
-                .replace(/^### (.*$)/gim, '<h5 class="text-base font-bold text-[#FFD39C] mt-4 mb-2">$1</h5>')
-                .replace(/^## (.*$)/gim, '<h4 class="text-lg font-extrabold text-[#FFD39C]/90 mt-5 mb-2.5 border-b border-slate-800 pb-1">$1</h4>')
-                .replace(/^# (.*$)/gim, '<h3 class="text-xl font-black text-white mt-6 mb-3">$1</h3>');
-
-            html = html.replace(/\*\*(.*?)\*\"/g, '<strong class="text-white font-bold">$1</strong>');
-            html = html.replace(/^\s*\n*-\s*(.*$)/gim, '<li class="ml-4 list-disc text-slate-300 py-0.5">$1</li>');
-
-            html = html.split('\n\n').map(p => {
-                if (!p.trim().startsWith('<h') && !p.trim().startsWith('<l')) {
-                    return `<p class="mb-3 leading-relaxed text-slate-300">${p}</p>`;
-                }
-                return p;
-            }).join('');
-
-            return html;
-        }
-
-        // Initialize with Context details on window load and set the Context accordion open by default
+        // Initialize with Context accordion open and restore any saved draft
         window.onload = function() {
             toggleFrameworkAccordion('C');
             compilePrompt();
+            loadDraftFromLocalStorage();
         };
     </script>
 </body>
