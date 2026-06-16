@@ -106,7 +106,7 @@
                 <div class="relative group w-12 h-12">
                     <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-teal-400 to-orange-400 blur-sm opacity-60 group-hover:opacity-100 transition duration-500"></div>
                     <div class="relative w-full h-full rounded-full overflow-hidden border border-white/20 bg-slate-900 shadow-lg">
-                        <img src="EIL%20Logo%20PNJ.jpg" alt="EIL Logo" class="w-full h-full object-cover" onerror="handleImageError(this,'logo')">
+                        <img src="EIL%20Logo%20PNJ%20small.png" alt="EIL Logo" class="w-full h-full object-cover" onerror="handleImageError(this,'logo')">
                         <div class="fallback-svg-container hidden w-full h-full bg-slate-900 items-center justify-center">
                             <i class="fa-solid fa-feather-pointed text-[#FF6B3D] text-lg"></i>
                         </div>
@@ -147,7 +147,7 @@
                     <div class="relative group w-36 h-36">
                         <div class="absolute -inset-2 rounded-full bg-gradient-to-r from-[#FF6B3D] to-[#0FA3A3] blur-lg opacity-40 group-hover:opacity-75 transition duration-500 animate-pulse"></div>
                         <div class="relative w-full h-full rounded-full overflow-hidden border-4 border-white bg-slate-900 shadow-2xl float-friendly">
-                            <img src="EIL%20Logo%20PNJ.jpg" alt="EIL Logo Large" class="w-full h-full object-cover" onerror="handleImageError(this,'logo')">
+                            <img src="EIL%20Logo%20PNJ%20small.png" alt="EIL Logo Large" class="w-full h-full object-cover" onerror="handleImageError(this,'logo')">
                             <div class="fallback-svg-container hidden w-full h-full bg-slate-900 items-center justify-center">
                                 <i class="fa-solid fa-feather-pointed text-[#FF6B3D] text-5xl"></i>
                             </div>
@@ -223,7 +223,7 @@
                 <div class="lg:col-span-5 relative group">
                     <div class="absolute -inset-1.5 rounded-3xl bg-gradient-to-r from-orange-400 via-[#FF6B3D] to-teal-400 blur-md opacity-40 group-hover:opacity-80 transition duration-500"></div>
                     <div class="relative rounded-2xl overflow-hidden border-4 border-white bg-slate-100 shadow-2xl h-[480px]">
-                        <img src="Danyel%20Cropped%20Headshot.jpg" alt="Danyel Burgett, MFA, M.Ed." class="w-full h-full object-cover object-top transition duration-500 group-hover:scale-[1.02]" onerror="handleImageError(this,'headshot')">
+                        <img src="Danyel%20Cropped%20Headshot.png" alt="Danyel Burgett, MFA, M.Ed." class="w-full h-full object-cover object-top transition duration-500 group-hover:scale-[1.02]" onerror="handleImageError(this,'headshot')">
                         <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#0F1E3D] via-[#0F1E3D]/80 to-transparent p-6 text-left">
                             <h4 class="text-xl font-bold text-white">Danyel Burgett</h4>
                             <span class="text-xs text-[#FF6B3D] font-bold block mt-1">MFA, M.Ed. | Chief Innovation Officer</span>
@@ -284,7 +284,7 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0F1E3D]/80 via-transparent to-transparent"></div>
                         <div class="absolute bottom-4 left-6 flex items-center space-x-4">
                             <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white bg-slate-900 shadow-md">
-                                <img src="EIL%20Logo%20PNJ%20small.jpg" alt="Channel Logo" class="w-full h-full object-cover" onerror="handleImageError(this,'logo')">
+                                <img src="EIL%20Logo%20PNJ%20small.png" alt="Channel Logo" class="w-full h-full object-cover" onerror="handleImageError(this,'logo')">
                             </div>
                             <div class="text-left text-white hidden sm:block">
                                 <h3 class="font-extrabold text-base leading-tight">The Educator Innovation Labs</h3>
@@ -424,7 +424,7 @@
             <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="flex items-center space-x-3 text-left">
                     <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white/20 bg-slate-900 shadow-lg">
-                        <img src="EIL%20Logo%20PNJ%20small.jpg" alt="EIL Logo Footer" class="w-full h-full object-cover" onerror="handleImageError(this,'logo')">
+                        <img src="EIL%20Logo%20PNJ%20small.png" alt="EIL Logo Footer" class="w-full h-full object-cover" onerror="handleImageError(this,'logo')">
                     </div>
                     <div>
                         <span class="font-bold text-white block text-sm">The Educator Innovation Labs</span>
@@ -517,15 +517,15 @@
             else img.dataset.retryCount = parseInt(img.dataset.retryCount) + 1;
             const count = parseInt(img.dataset.retryCount);
             if (type === 'logo') {
-                if (count === 1) img.src = "EIL%20Logo%20PNJ%20small.jpg";
-                else if (count === 2) img.src = "EIL Logo PNJ.jpg";
+                if (count === 1) img.src = "EIL%20Logo%20PNJ%20small.png";
+                else if (count === 2) img.src = "EIL Logo PNJ small.png";
                 else {
                     img.classList.add('hidden');
                     const fb = img.parentElement?.querySelector('.fallback-svg-container');
                     if (fb) { fb.classList.remove('hidden'); fb.classList.add('flex'); }
                 }
             } else if (type === 'headshot') {
-                if (count === 1) img.src = "Danyel Cropped Headshot.jpg";
+                if (count === 1) img.src = "Danyel Cropped Headshot.png";
                 else img.src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=80";
             } else if (type === 'banner') {
                 if (count === 1) img.src = "EIL YouTube Banner Graphic.jpg";
