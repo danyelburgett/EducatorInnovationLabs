@@ -3,57 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLEAR Prompt Engineering Generator - Educator Innovation Labs</title>
-    <!-- Tailwind CSS for modern responsive styling -->
+    <title>CLEAR Prompt Generator - The Educator Innovation Labs</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        indigo: {
-                            50: '#f0f4fa',
-                            100: '#dbe5f5',
-                            200: '#bdd0eb',
-                            300: '#8eafd9',
-                            400: '#5888c3',
-                            500: '#3b6ea8',
-                            600: '#092B62',
-                            700: '#1c3966',
-                            800: '#092B62',
-                            900: '#071f47',
-                            950: '#092B62',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome for high-quality education and UI icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --color-navy: #0F1E3D;
+            --color-teal: #0FA3A3;
+            --color-coral: #FF6B3D;
+            --color-white: #F8F9FA;
+            --color-electric: #2FA8FF;
+            --color-aqua: #7FE3E3;
+            --color-slate: #E6E8EB;
+            --brand-primary: #FF6B3D;
+            --brand-secondary: #0FA3A3;
+            --brand-glow-opacity: 0.22;
+            --grid-speed: 30s;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7fafc;
+            color: #0F1E3D;
+            overflow-x: hidden;
         }
-        /* Custom scrollbar styling for a premium feel */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+
+        .animated-grid {
+            background-size: 60px 60px;
+            background-image:
+                linear-gradient(to right, rgba(15, 163, 163, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 163, 163, 0.04) 1px, transparent 1px);
+            animation: gridMove var(--grid-speed) linear infinite;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 4px;
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 60px 60px; }
         }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1) translate(0px, 0px); opacity: var(--brand-glow-opacity); }
+            50% { transform: scale(1.15) translate(15px, -10px); opacity: calc(var(--brand-glow-opacity) * 1.25); }
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+        .glow-spot-1 { animation: pulseGlow 12s ease-in-out infinite; }
+        .glow-spot-2 { animation: pulseGlow 16s ease-in-out infinite alternate; }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 107, 61, 0.12);
+            box-shadow: 0 15px 35px -5px rgba(15, 30, 61, 0.06), 0 5px 15px -3px rgba(15, 30, 61, 0.03);
         }
-        /* Smooth height transition for accordion dropdowns */
+
+        .bouncy-hover {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .bouncy-hover:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 20px 40px -10px rgba(255, 107, 61, 0.15);
+        }
+
+        /* Accordion */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
@@ -61,623 +81,593 @@
             opacity: 0;
         }
         .accordion-content.active {
-            max-height: 500px; /* high enough for expanded content */
+            max-height: 500px;
             opacity: 1;
+        }
+
+        /* Hero gradient matching homepage navy */
+        .hero-gradient {
+            background: linear-gradient(160deg, #0F1E3D 0%, #162a4a 55%, #1a3550 100%);
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+<body class="min-h-screen relative overflow-x-hidden antialiased selection:bg-orange-100">
 
     <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- Header Section -->
-    <header class="bg-indigo-950 text-white shadow-md border-b-4 border-[#FFD39C] sticky top-0 z-40 transition-all">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-gradient-to-br from-[#FFD39C] to-[#FFD39C] p-2.5 rounded-xl shadow-lg flex items-center justify-center transform hover:rotate-6 transition-transform">
-                        <i class="fa-solid fa-graduation-cap text-indigo-950 text-2xl"></i>
+    <!-- Ambient glow backgrounds -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="glow-spot-1 absolute top-[10%] left-[5%] w-[500px] h-[500px] rounded-full blur-[120px]" style="background: radial-gradient(circle, var(--color-coral) 0%, transparent 70%); opacity: var(--brand-glow-opacity);"></div>
+        <div class="glow-spot-2 absolute top-[45%] right-[5%] w-[600px] h-[600px] rounded-full blur-[140px]" style="background: radial-gradient(circle, var(--color-teal) 0%, transparent 70%); opacity: var(--brand-glow-opacity);"></div>
+        <div class="glow-spot-1 absolute bottom-[10%] left-[20%] w-[400px] h-[400px] rounded-full blur-[110px]" style="background: radial-gradient(circle, var(--color-electric) 0%, transparent 70%); opacity: var(--brand-glow-opacity);"></div>
+    </div>
+
+    <div class="relative z-10 animated-grid min-h-screen flex flex-col">
+
+        <!-- STICKY NAV — matches homepage -->
+        <nav class="sticky top-0 z-50 glass-panel px-6 py-4 mx-4 mt-4 rounded-2xl">
+            <div class="flex items-center justify-between">
+                <!-- Logo + Name -->
+                <a href="/" class="flex items-center space-x-3.5 no-underline">
+                    <div class="relative group w-12 h-12">
+                        <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-teal-400 to-orange-400 blur-sm opacity-60 group-hover:opacity-100 transition duration-500"></div>
+                        <div class="relative w-full h-full rounded-full overflow-hidden border border-white/20 bg-slate-900 shadow-lg">
+                            <img src="../EIL%20Logo%20PNJ%20small.png" alt="EIL Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('flex');">
+                            <div class="hidden w-full h-full bg-slate-900 items-center justify-center">
+                                <i class="fa-solid fa-feather-pointed text-[#FF6B3D] text-lg"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <span class="text-xs font-semibold uppercase tracking-widest text-[#FFD39C] block">Educator Innovation Labs</span>
-                        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight">CLEAR Prompt Generator</h1>
+                    <div class="text-left">
+                        <span class="font-extrabold text-sm md:text-base tracking-wide text-[#0F1E3D] block leading-none">THE EDUCATOR</span>
+                        <span class="text-xs tracking-wider uppercase font-extrabold block mt-1" style="color: var(--brand-secondary)">INNOVATION LABS</span>
                     </div>
-                </div>
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="/" class="text-slate-300 hover:text-[#FFD39C] transition font-medium text-sm"><i class="fa-solid fa-house mr-1"></i> Home</a>
-                    <a href="#framework" class="text-slate-300 hover:text-[#FFD39C] transition font-medium text-sm">The Framework</a>
-                    <a href="#generator" class="text-slate-300 hover:text-[#FFD39C] transition font-medium text-sm">Prompt Builder</a>
-                    <a href="#examples" class="text-slate-300 hover:text-[#FFD39C] transition font-medium text-sm">Worked Examples</a>
-
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="relative bg-gradient-to-b from-indigo-950 via-indigo-900 to-slate-50 pt-12 pb-16 px-4 text-white">
-        <div class="max-w-6xl mx-auto text-center">
-            <span class="px-3 py-1 bg-[#FFD39C]/10 text-[#FFD39C] rounded-full text-xs font-semibold uppercase tracking-wider inline-block mb-4 border border-[#FFD39C]/30">
-                School Leadership Edition
-            </span>
-            <h2 class="text-4xl md:text-5xl font-black mb-6 leading-tight">
-                Supercharge Your AI Outputs with <span class="text-[#FFD39C] bg-clip-text">CLEAR</span>
-            </h2>
-            <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed">
-                Generic prompts yield generic results. The <strong>CLEAR Framework</strong> is designed specifically for school leaders to prompt LLMs with contextual precision, delivering expert, instantly usable templates, communications, and guides.
-            </p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="#generator" class="px-6 py-3.5 bg-gradient-to-r from-[#FFD39C] to-[#E5A95E] text-indigo-950 hover:from-[#FFE0B8] hover:to-[#FFD39C] font-bold rounded-xl shadow-lg shadow-[#FFD39C]/20 transition-all transform hover:-translate-y-0.5">
-                    <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Build a CLEAR Prompt
                 </a>
-                <a href="#framework" class="px-6 py-3.5 bg-indigo-800/60 hover:bg-indigo-800 border border-slate-700 hover:border-slate-500 font-medium rounded-xl transition">
-                    Explore the Elements
-                </a>
-            </div>
-        </div>
-    </section>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow">
-        <section id="framework" class="mb-16 scroll-mt-24">
-            <div class="text-center mb-10">
-                <h3 class="text-3xl font-extrabold text-slate-900">The CLEAR Five-Element Framework</h3>
-                <p class="text-slate-600 mt-2 max-w-2xl mx-auto">
-                    CLEAR is a five-element framework for engineering high-quality AI prompts. Each element ensures your prompt is specific enough to produce expert-quality, immediately usable results. Click any card to see the template and a school leadership example.
-                </p>
-                <span class="text-xs font-bold uppercase tracking-widest text-slate-400 block mt-4">
-                    THE FIVE ELEMENTS — CLICK TO EXPAND
+                <!-- Desktop nav links -->
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="/" class="px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-[#FF6B3D] hover:bg-orange-50 transition"><i class="fa-solid fa-house mr-1 text-xs"></i> Home</a>
+                    <a href="#framework" class="px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-[#FF6B3D] hover:bg-orange-50 transition">The Framework</a>
+                    <a href="#generator" class="px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-[#FF6B3D] hover:bg-orange-50 transition">Prompt Builder</a>
+                    <a href="#examples" class="px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-[#FF6B3D] hover:bg-orange-50 transition">Examples</a>
+                    <a href="#generator" class="ml-2 px-4 py-2 rounded-xl text-sm font-bold text-white transition shadow-md" style="background: linear-gradient(135deg, #FF6B3D, #0FA3A3);">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Build a Prompt
+                    </a>
+                </div>
+
+                <!-- Mobile hamburger -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-slate-100 hover:bg-orange-50 transition">
+                    <i id="hamburger-icon" class="fa-solid fa-bars text-lg text-slate-700"></i>
+                </button>
+            </div>
+
+            <!-- Mobile menu dropdown -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-slate-100 space-y-1">
+                <a href="/" class="flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-[#FF6B3D] hover:bg-orange-50 transition"><i class="fa-solid fa-house mr-2 text-xs text-[#FF6B3D]"></i> Home</a>
+                <a href="#framework" onclick="toggleMobileMenu()" class="flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-[#FF6B3D] hover:bg-orange-50 transition"><i class="fa-solid fa-layer-group mr-2 text-xs text-[#0FA3A3]"></i> The Framework</a>
+                <a href="#generator" onclick="toggleMobileMenu()" class="flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-[#FF6B3D] hover:bg-orange-50 transition"><i class="fa-solid fa-pen-to-square mr-2 text-xs text-[#FF6B3D]"></i> Prompt Builder</a>
+                <a href="#examples" onclick="toggleMobileMenu()" class="flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-[#FF6B3D] hover:bg-orange-50 transition"><i class="fa-solid fa-book-open mr-2 text-xs text-[#0FA3A3]"></i> Examples</a>
+            </div>
+        </nav>
+
+        <!-- HERO SECTION -->
+        <section class="relative hero-gradient pt-14 pb-20 px-4 text-white mt-4 mx-4 rounded-3xl overflow-hidden">
+            <!-- Subtle dot pattern overlay -->
+            <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(rgba(255,255,255,0.6) 1px, transparent 1px); background-size: 22px 22px;"></div>
+            <div class="relative max-w-4xl mx-auto text-center">
+                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-5 border" style="background: rgba(255,107,61,0.15); border-color: rgba(255,107,61,0.3); color: #FF6B3D;">
+                    <i class="fa-solid fa-graduation-cap"></i> School Leadership Edition
                 </span>
-            </div>
-
-            <!-- Vertical Accordion Stack matching premium callout shadings of mglearn.github.io/tcea/ -->
-            <div class="space-y-4 max-w-5xl mx-auto mb-12">
-                
-                <!-- C (Context) Accordion Item - Shaded Amber/Orange Callout -->
-                <div id="accordion-C" class="bg-orange-50/70 hover:bg-orange-50 rounded-2xl border border-orange-100 border-l-4 border-[#FB6F07] shadow-sm overflow-hidden transition-all duration-300">
-                    <button onclick="toggleFrameworkAccordion('C')" class="w-full flex items-start justify-between p-5 sm:p-6 text-left outline-none">
-                        <div class="flex items-start">
-                            <!-- Badge styling matching high-contrast orange callouts -->
-                            <div class="w-12 h-12 rounded-xl bg-[#FB6F07] text-white font-extrabold text-xl flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">
-                                C
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-bold text-orange-950 inline-block mr-2">Context</h4>
-                                <span class="text-sm font-semibold text-orange-700">What is your situation?</span>
-                                <p class="text-sm text-orange-900/80 mt-1 leading-relaxed">
-                                    Describe who you are, your role, your school context, and the specific circumstances. Real detail unlocks relevant responses.
-                                </p>
-                            </div>
-                        </div>
-                        <span class="text-orange-400 mt-1 pl-2">
-                            <i id="chevron-C" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
-                        </span>
-                    </button>
-                    <!-- Expanded content area -->
-                    <div id="content-C" class="accordion-content">
-                        <div class="border-t border-orange-200/50 mx-6 my-1"></div>
-                        <div class="p-6 pt-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-orange-800 block mb-2">Starter Template</span>
-                                <div class="bg-white/80 border border-orange-200/60 rounded-2xl p-5 text-orange-950 italic text-sm sm:text-base leading-relaxed shadow-inner">
-                                    I am a [role] at a [school type]. [2-3 sentences on the relevant situation or challenge].
-                                </div>
-                            </div>
-                            <div class="relative group">
-                                <span class="text-xs font-bold uppercase tracking-wider text-orange-800 block mb-2">School Leadership Example</span>
-                                <div class="bg-orange-100/40 border border-[#FB6F07]/20 rounded-2xl p-5 text-orange-950 text-sm sm:text-base leading-relaxed">
-                                    I am a K-8 principal at a Title I urban school with 420 students and 35 staff. It's November and we've had three staff resignations and a string of difficult parent incidents that have shaken morale.
-                                    <div class="mt-4 flex justify-end">
-                                        <button onclick="applyAccordionExampleToWorkspace('C')" class="px-3.5 py-1.5 bg-[#FB6F07] hover:bg-[#d65b00] text-white rounded-xl text-xs font-semibold flex items-center transition shadow-sm">
-                                            <i class="fa-solid fa-file-import mr-1.5"></i> Use Context in Workspace
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <h1 class="text-4xl md:text-5xl font-black mb-5 leading-tight">
+                    Supercharge Your AI Outputs<br>with the <span style="color: #FF6B3D;">CLEAR</span> Framework
+                </h1>
+                <p class="text-lg text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed">
+                    Generic prompts yield generic results. The <strong class="text-white">CLEAR Framework</strong> is built for school leaders — delivering expert, instantly usable templates, communications, and guides.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#generator" class="px-6 py-3.5 rounded-xl font-bold text-white shadow-lg transition-all hover:-translate-y-0.5" style="background: linear-gradient(135deg, #FF6B3D, #e5561f);">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Build a CLEAR Prompt
+                    </a>
+                    <a href="#framework" class="px-6 py-3.5 rounded-xl font-semibold transition border border-slate-600 hover:border-slate-400 text-slate-200 hover:text-white hover:bg-white/10">
+                        Explore the Elements
+                    </a>
                 </div>
-
-                <!-- L (Lens) Accordion Item - Shaded Royal Blue Callout -->
-                <div id="accordion-L" class="bg-blue-50/70 hover:bg-blue-50 rounded-2xl border border-blue-100 border-l-4 border-[#092B62] shadow-sm overflow-hidden transition-all duration-300">
-                    <button onclick="toggleFrameworkAccordion('L')" class="w-full flex items-start justify-between p-5 sm:p-6 text-left outline-none">
-                        <div class="flex items-start">
-                            <!-- Badge styling matching deep indigo -->
-                            <div class="w-12 h-12 rounded-xl bg-[#092B62] text-white font-extrabold text-xl flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">
-                                L
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-bold text-blue-950 inline-block mr-2">Lens</h4>
-                                <span class="text-sm font-semibold text-blue-800">What role should the AI play?</span>
-                                <p class="text-sm text-blue-900/80 mt-1 leading-relaxed">
-                                    Assign a specific expertise or perspective. Think: who would you call if you needed help with this? That's the Lens.
-                                </p>
-                            </div>
-                        </div>
-                        <span class="text-blue-400 mt-1 pl-2">
-                            <i id="chevron-L" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
-                        </span>
-                    </button>
-                    <!-- Expanded content area -->
-                    <div id="content-L" class="accordion-content">
-                        <div class="border-t border-blue-200/50 mx-6 my-1"></div>
-                        <div class="p-6 pt-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-blue-800 block mb-2">Starter Template</span>
-                                <div class="bg-white/80 border border-blue-200/60 rounded-2xl p-5 text-blue-950 italic text-sm sm:text-base leading-relaxed shadow-inner">
-                                    Act as a [specific expert type] who specializes in [relevant domain].
-                                </div>
-                            </div>
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-blue-800 block mb-2">School Leadership Example</span>
-                                <div class="bg-blue-100/40 border border-indigo-200 rounded-2xl p-5 text-blue-950 text-sm sm:text-base leading-relaxed">
-                                    Act as an experienced school leadership coach who specializes in building resilient school cultures in high-need urban schools.
-                                    <div class="mt-4 flex justify-end">
-                                        <button onclick="applyAccordionExampleToWorkspace('L')" class="px-3.5 py-1.5 bg-indigo-800 hover:bg-indigo-900 text-white rounded-xl text-xs font-semibold flex items-center transition shadow-sm">
-                                            <i class="fa-solid fa-file-import mr-1.5"></i> Use Lens in Workspace
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- E (Expectation) Accordion Item - Shaded Peach Callout Custom styled with #FFD39C -->
-                <div id="accordion-E" class="bg-[#FFD39C]/10 hover:bg-[#FFD39C]/20 rounded-2xl border border-[#FFD39C]/40 border-l-4 border-[#FFD39C] shadow-sm overflow-hidden transition-all duration-300">
-                    <button onclick="toggleFrameworkAccordion('E')" class="w-full flex items-start justify-between p-5 sm:p-6 text-left outline-none">
-                        <div class="flex items-start">
-                            <!-- Badge styling matching expectations using custom brand #FFD39C (High-contrast text) -->
-                            <div class="w-12 h-12 rounded-xl bg-[#FFD39C] text-indigo-950 font-extrabold text-xl flex items-center justify-center mr-4 flex-shrink-0 shadow-sm border border-[#FFD39C]/50">
-                                E
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-bold text-slate-900 inline-block mr-2">Expectation</h4>
-                                <span class="text-sm font-semibold text-amber-800">What specifically do you need?</span>
-                                <p class="text-sm text-slate-700 mt-1 leading-relaxed">
-                                    Name the exact deliverable. Use action verbs. Vague asks produce vague answers — specificity is the key to quality.
-                                </p>
-                            </div>
-                        </div>
-                        <span class="text-amber-600 mt-1 pl-2">
-                            <i id="chevron-E" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
-                        </span>
-                    </button>
-                    <!-- Expanded content area -->
-                    <div id="content-E" class="accordion-content">
-                        <div class="border-t border-[#FFD39C]/30 mx-6 my-1"></div>
-                        <div class="p-6 pt-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-amber-800 block mb-2">Starter Template</span>
-                                <div class="bg-white/80 border border-[#FFD39C]/30 rounded-2xl p-5 text-slate-800 italic text-sm sm:text-base leading-relaxed shadow-inner">
-                                    Help me [specific verb + task] that achieves [intended outcome or purpose].
-                                </div>
-                            </div>
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-amber-800 block mb-2">School Leadership Example</span>
-                                <div class="bg-[#FFD39C]/5 border border-[#FFD39C]/25 rounded-2xl p-5 text-slate-800 text-sm sm:text-base leading-relaxed">
-                                    Design a 45-minute staff appreciation and re-energizing activity I can facilitate at our next faculty meeting to rebuild collective efficacy.
-                                    <div class="mt-4 flex justify-end">
-                                        <button onclick="applyAccordionExampleToWorkspace('E')" class="px-3.5 py-1.5 bg-[#FFD39C] hover:bg-[#E5A95E] text-indigo-950 font-bold rounded-xl text-xs flex items-center transition shadow-sm border border-[#FFD39C]/40">
-                                            <i class="fa-solid fa-file-import mr-1.5"></i> Use Expectation in Workspace
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- A (Audience) Accordion Item - Shaded Teal/Sky Callout Custom styled with #267e89 -->
-                <div id="accordion-A" class="bg-[#267e89]/5 hover:bg-[#267e89]/10 rounded-2xl border border-[#267e89]/20 border-l-4 border-[#267e89] shadow-sm overflow-hidden transition-all duration-300">
-                    <button onclick="toggleFrameworkAccordion('A')" class="w-full flex items-start justify-between p-5 sm:p-6 text-left outline-none">
-                        <div class="flex items-start">
-                            <!-- Badge styling matching expectations using custom brand #267e89 -->
-                            <div class="w-12 h-12 rounded-xl bg-[#267e89] text-white font-extrabold text-xl flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">
-                                A
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-bold text-slate-900 inline-block mr-2">Audience</h4>
-                                <span class="text-sm font-semibold text-[#267e89]">Who is this for?</span>
-                                <p class="text-sm text-slate-700 mt-1 leading-relaxed">
-                                    Describe who will read, hear, or use this output. The AI calibrates tone, vocabulary, and depth to match the real people involved.
-                                </p>
-                            </div>
-                        </div>
-                        <span class="text-[#267e89] mt-1 pl-2">
-                            <i id="chevron-A" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
-                        </span>
-                    </button>
-                    <!-- Expanded content area -->
-                    <div id="content-A" class="accordion-content">
-                        <div class="border-t border-[#267e89]/20 mx-6 my-1"></div>
-                        <div class="p-6 pt-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-[#267e89] block mb-2">Starter Template</span>
-                                <div class="bg-white/80 border border-[#267e89]/20 rounded-2xl p-5 text-slate-800 italic text-sm sm:text-base leading-relaxed shadow-inner">
-                                    My audience is [who] who [relevant characteristics, needs, or context].
-                                </div>
-                            </div>
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-[#267e89] block mb-2">School Leadership Example</span>
-                                <div class="bg-[#267e89]/5 border border-[#267e89]/25 rounded-2xl p-5 text-slate-800 text-sm sm:text-base leading-relaxed">
-                                    My audience is a mix of veteran teachers (10+ years) and newer teachers in years 1-2, many of whom are questioning whether they made the right career choice.
-                                    <div class="mt-4 flex justify-end">
-                                        <button onclick="applyAccordionExampleToWorkspace('A')" class="px-3.5 py-1.5 bg-[#267e89] hover:bg-[#1b5860] text-white rounded-xl text-xs font-semibold flex items-center transition shadow-sm">
-                                            <i class="fa-solid fa-file-import mr-1.5"></i> Use Audience in Workspace
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- R (Result Format) Accordion Item - Sophisticated Violet/Amethyst Callout (#7C3AED) -->
-                <div id="accordion-R" class="bg-violet-50/70 hover:bg-violet-50 rounded-2xl border border-violet-100 border-l-4 border-[#7C3AED] shadow-sm overflow-hidden transition-all duration-300">
-                    <button onclick="toggleFrameworkAccordion('R')" class="w-full flex items-start justify-between p-5 sm:p-6 text-left outline-none">
-                        <div class="flex items-start">
-                            <!-- Badge styling matching result format -->
-                            <div class="w-12 h-12 rounded-xl bg-[#7C3AED] text-white font-extrabold text-xl flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">
-                                R
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-bold text-violet-950 inline-block mr-2">Result Format</h4>
-                                <span class="text-sm font-semibold text-violet-700">How do you want it delivered?</span>
-                                <p class="text-sm text-violet-900/80 mt-1 leading-relaxed">
-                                    Specify format, structure, length, and constraints. Tell the AI exactly how to package the response so it's immediately usable.
-                                </p>
-                            </div>
-                        </div>
-                        <span class="text-violet-400 mt-1 pl-2">
-                            <i id="chevron-R" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
-                        </span>
-                    </button>
-                    <!-- Expanded content area -->
-                    <div id="content-R" class="accordion-content">
-                        <div class="border-t border-violet-200/50 mx-6 my-1"></div>
-                        <div class="p-6 pt-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-violet-800 block mb-2">Starter Template</span>
-                                <div class="bg-white/80 border border-violet-200/60 rounded-2xl p-5 text-violet-950 italic text-sm sm:text-base leading-relaxed shadow-inner">
-                                    Give me a [format] with [specific sections]. Include [requirements]. Keep it [length or tone constraint].
-                                </div>
-                            </div>
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-violet-800 block mb-2">School Leadership Example</span>
-                                <div class="bg-violet-100/40 border border-violet-200 rounded-2xl p-5 text-violet-950 text-sm sm:text-base leading-relaxed">
-                                    Give me a step-by-step facilitation guide with: a warm-up (10 min), main activity (25 min), and closing ritual (10 min). Include timing, materials, and one facilitator tip per section.
-                                    <div class="mt-4 flex justify-end">
-                                        <button onclick="applyAccordionExampleToWorkspace('R')" class="px-3.5 py-1.5 bg-[#7C3AED] hover:bg-[#5B21B6] text-white rounded-xl text-xs font-semibold flex items-center transition shadow-sm">
-                                            <i class="fa-solid fa-file-import mr-1.5"></i> Use Format in Workspace
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
 
-        <section id="generator" class="mb-16 scroll-mt-24">
-            <div class="text-center mb-10">
-                <h3 class="text-3xl font-extrabold text-slate-900">The CLEAR Prompt Creator Workspace</h3>
-                <p class="text-slate-600 mt-2 max-w-2xl mx-auto">Fill in each component below to automatically construct a professional, hyper-targeted administrative prompt. Your draft updates are saved automatically so you won't lose your work.</p>
-            </div>
+        <!-- MAIN CONTENT -->
+        <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 flex-grow">
 
-            <!-- Workspace Columns Layout -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                
-                <!-- Inputs Side (7/12 grid columns) -->
-                <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-slate-200 space-y-6">
-                    
-                    <!-- Context Input -->
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between">
-                            <label class="block text-sm font-bold text-slate-800 flex items-center">
-                                <span class="w-6 h-6 rounded-md bg-[#FB6F07] text-white font-extrabold text-xs flex items-center justify-center mr-2">C</span>
-                                Context <span class="text-slate-400 font-normal text-xs ml-1">(Your situation)</span>
-                            </label>
-                            <!-- Quick Fill -->
-                            <div class="relative inline-block text-left">
-                                <button type="button" onclick="toggleDropdown('context-dropdown')" class="text-xs text-[#FB6F07] hover:text-[#d65b00] font-bold flex items-center bg-[#FB6F07]/10 px-2.5 py-1 rounded-md transition border border-[#FB6F07]/20">
-                                    Quick-Fill Ideas <i class="fa-solid fa-chevron-down ml-1"></i>
-                                </button>
-                                <div id="context-dropdown" class="hidden absolute right-0 mt-1 w-64 rounded-xl bg-white shadow-xl border border-slate-200 z-50">
-                                    <div class="py-1 text-xs">
-                                        <button onclick="quickFill('context', 'Title I Elementary School, suburban campus, undergoing a new technology integration program this semester.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Title I Elementary (Suburban)</button>
-                                        <button onclick="quickFill('context', 'A large urban High School with 1,800 students. Seeking ways to improve student attendance rates after winter break.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Urban High School Attendance</button>
-                                        <button onclick="quickFill('context', 'A K-12 private school with 500 students, preparing for state board compliance visits occurring next month.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Board Compliance Prep</button>
-                                    </div>
+            <!-- FRAMEWORK SECTION -->
+            <section id="framework" class="mb-16 scroll-mt-28">
+                <div class="text-center mb-10">
+                    <span class="text-xs font-bold uppercase tracking-widest" style="color: var(--brand-secondary)">The Method</span>
+                    <h2 class="text-3xl font-extrabold text-[#0F1E3D] mt-1">The CLEAR Five-Element Framework</h2>
+                    <p class="text-slate-500 mt-2 max-w-2xl mx-auto text-sm leading-relaxed">
+                        CLEAR is a five-element framework for engineering high-quality AI prompts. Each element ensures your prompt is specific enough to produce expert-quality, immediately usable results. Click any card to expand.
+                    </p>
+                    <span class="text-xs font-bold uppercase tracking-widest text-slate-400 block mt-4">
+                        THE FIVE ELEMENTS — CLICK TO EXPAND
+                    </span>
+                </div>
+
+                <div class="space-y-4 max-w-5xl mx-auto mb-12">
+
+                    <!-- C (Context) -->
+                    <div id="accordion-C" class="bg-orange-50/70 hover:bg-orange-50 rounded-2xl border border-orange-100 border-l-4 border-[#FF6B3D] shadow-sm overflow-hidden transition-all duration-300">
+                        <button onclick="toggleFrameworkAccordion('C')" class="w-full flex items-start justify-between p-5 sm:p-6 text-left outline-none">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 rounded-xl bg-[#FF6B3D] text-white font-extrabold text-xl flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">C</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-orange-950 inline-block mr-2">Context</h4>
+                                    <span class="text-sm font-semibold text-orange-700">What is your situation?</span>
+                                    <p class="text-sm text-orange-900/80 mt-1 leading-relaxed">Describe who you are, your role, your school context, and the specific circumstances. Real detail unlocks relevant responses.</p>
                                 </div>
                             </div>
-                        </div>
-                        <textarea id="input-C" oninput="compilePrompt()" rows="3" class="w-full rounded-xl border border-slate-300 p-3 text-sm focus:ring-2 focus:ring-[#FB6F07] focus:border-[#FB6F07] outline-none transition" placeholder="e.g. I am a principal at a Title I elementary school with 400 students. We are experiencing declining parent volunteerism..."></textarea>
-                    </div>
-
-                    <!-- Lens Input -->
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between">
-                            <label class="block text-sm font-bold text-slate-800 flex items-center">
-                                <span class="w-6 h-6 rounded-md bg-[#092B62] text-white font-extrabold text-xs flex items-center justify-center mr-2">L</span>
-                                Lens <span class="text-slate-400 font-normal text-xs ml-1">(AI's expert role)</span>
-                            </label>
-                            <!-- Quick Fill -->
-                            <div class="relative inline-block text-left">
-                                <button type="button" onclick="toggleDropdown('lens-dropdown')" class="text-xs text-[#092B62] hover:text-indigo-900 font-medium flex items-center bg-indigo-50 px-2 py-1 rounded-md transition border border-indigo-100">
-                                    Quick-Fill Ideas <i class="fa-solid fa-chevron-down ml-1"></i>
-                                </button>
-                                <div id="lens-dropdown" class="hidden absolute right-0 mt-1 w-64 rounded-xl bg-white shadow-xl border border-slate-200 z-50">
-                                    <div class="py-1 text-xs">
-                                        <button onclick="quickFill('lens', 'Act as an expert educational leadership coach with decades of experience guiding urban school administrators through cultural pivots.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Leadership Coach</button>
-                                        <button onclick="quickFill('lens', 'Act as an expert school crisis PR consultant who specializes in transparent, empathetic parent communications.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Crisis PR Consultant</button>
-                                        <button onclick="quickFill('lens', 'Act as an instructional design expert specializing in restorative-driven teacher professional development.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Instructional Designer</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <textarea id="input-L" oninput="compilePrompt()" rows="2" class="w-full rounded-xl border border-slate-300 p-3 text-sm focus:ring-2 focus:ring-[#092B62] focus:border-[#092B62] outline-none transition" placeholder="e.g. Act as an experienced school leadership coach specializing in building resilient staff cultures..."></textarea>
-                    </div>
-
-                    <!-- Expectation Input - Custom styled with #FFD39C -->
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between">
-                            <label class="block text-sm font-bold text-slate-800 flex items-center">
-                                <span class="w-6 h-6 rounded-md bg-[#FFD39C] text-indigo-950 font-extrabold text-xs flex items-center justify-center mr-2 border border-[#FFD39C]/60">E</span>
-                                Expectation <span class="text-slate-400 font-normal text-xs ml-1">(Your exact need)</span>
-                            </label>
-                            <!-- Quick Fill styled with peach -->
-                            <div class="relative inline-block text-left">
-                                <button type="button" onclick="toggleDropdown('expectation-dropdown')" class="text-xs text-amber-800 hover:text-amber-950 font-bold flex items-center bg-[#FFD39C]/20 px-2.5 py-1 rounded-md transition border border-[#FFD39C]/40">
-                                    Quick-Fill Ideas <i class="fa-solid fa-chevron-down ml-1"></i>
-                                </button>
-                                <div id="expectation-dropdown" class="hidden absolute right-0 mt-1 w-64 rounded-xl bg-white shadow-xl border border-slate-200 z-50">
-                                    <div class="py-1 text-xs">
-                                        <button onclick="quickFill('expectation', 'Design a highly engaging, restorative 45-minute professional development agenda to improve teacher wellness.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Wellness PD Session Agenda</button>
-                                        <button onclick="quickFill('expectation', 'Draft an empathetic, informative, and reassurance-driven parent email addressing local weather concerns and school safety plans.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Safety Parent Communication</button>
-                                        <button onclick="quickFill('expectation', 'Construct a restorative behavior intervention matrix with progressive pathways for disruptive classroom behaviors.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Behavior Intervention Matrix</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <textarea id="input-E" oninput="compilePrompt()" rows="3" class="w-full rounded-xl border border-slate-300 p-3 text-sm focus:ring-2 focus:ring-[#FFD39C] focus:border-[#FFD39C] outline-none transition" placeholder="e.g. Design a 45-minute staff appreciation activity that I can facilitate at our upcoming faculty meeting..."></textarea>
-                    </div>
-
-                    <!-- Audience Input - Custom styled with #267e89 -->
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between">
-                            <label class="block text-sm font-bold text-slate-800 flex items-center">
-                                <span class="w-6 h-6 rounded-md bg-[#267e89] text-white font-extrabold text-xs flex items-center justify-center mr-2">A</span>
-                                Audience <span class="text-slate-400 font-normal text-xs ml-1">(Who is reading this)</span>
-                            </label>
-                            <!-- Quick Fill -->
-                            <div class="relative inline-block text-left">
-                                <button type="button" onclick="toggleDropdown('audience-dropdown')" class="text-xs text-[#267e89] hover:text-[#1b5860] font-bold flex items-center bg-[#267e89]/10 px-2.5 py-1 rounded-md transition border border-[#267e89]/20">
-                                    Quick-Fill Ideas <i class="fa-solid fa-chevron-down ml-1"></i>
-                                </button>
-                                <div id="audience-dropdown" class="hidden absolute right-0 mt-1 w-64 rounded-xl bg-white shadow-xl border border-slate-200 z-50">
-                                    <div class="py-1 text-xs">
-                                        <button onclick="quickFill('audience', 'A mix of veteran teachers (15+ years experience) and newly recruited teachers, who appreciate hands-on, non-condescending collaboration.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Mixed Experience Faculty</button>
-                                        <button onclick="quickFill('audience', 'Busy school parents and community guardians who need quick, reassuring updates with accessible language (no technical jargon).')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Parents & Caregivers</button>
-                                        <button onclick="quickFill('audience', 'School Board Trustees and District leadership, who look for evidence-backed metrics and fiscal transparency.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Board Trustees & District Execs</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <textarea id="input-A" oninput="compilePrompt()" rows="2" class="w-full rounded-xl border border-slate-300 p-3 text-sm focus:ring-2 focus:ring-[#267e89] focus:border-[#267e89] outline-none transition" placeholder="e.g. My audience is a mix of veteran teachers and 1st-year teachers who are currently feeling highly fatigued..."></textarea>
-                    </div>
-
-                    <!-- Result Format Input - Styled with Amethyst/Violet theme (#7C3AED) -->
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between">
-                            <label class="block text-sm font-bold text-slate-800 flex items-center">
-                                <span class="w-6 h-6 rounded-md bg-[#7C3AED] text-white font-extrabold text-xs flex items-center justify-center mr-2">R</span>
-                                Result Format <span class="text-slate-400 font-normal text-xs ml-1">(Output structure)</span>
-                            </label>
-                            <!-- Quick Fill -->
-                            <div class="relative inline-block text-left">
-                                <button type="button" onclick="toggleDropdown('format-dropdown')" class="text-xs text-violet-750 hover:text-violet-900 font-medium flex items-center bg-violet-50 px-2 py-1 rounded-md transition border border-violet-100">
-                                    Quick-Fill Ideas <i class="fa-solid fa-chevron-down ml-1"></i>
-                                </button>
-                                <div id="format-dropdown" class="hidden absolute right-0 mt-1 w-64 rounded-xl bg-white shadow-xl border border-slate-200 z-50">
-                                    <div class="py-1 text-xs">
-                                        <button onclick="quickFill('format', 'Provide a clear, step-by-step facilitation roadmap containing: warm-up (10 min), main exercise (25 min), action steps (10 min). Include materials needed and facilitator tips.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Step-by-Step Roadmap</button>
-                                        <button onclick="quickFill('format', 'An administrative email with a highly supportive Subject Line, 3 distinct paragraph sections (The Issue, The Response, The Resources), and clear bullet points for vital resources.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Formatted Parent Email</button>
-                                        <button onclick="quickFill('format', 'Organized as a clean markdown table. Columns must include: Behavior Level, Admin Intervention Protocol, Restorative Action Prompt, and Escalation Criteria.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Clean Markdown Table</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <textarea id="input-R" oninput="compilePrompt()" rows="2" class="w-full rounded-xl border border-slate-300 p-3 text-sm focus:ring-2 focus:ring-violet-500 focus:border-violet-500 outline-none transition" placeholder="e.g. A bulleted step-by-step facilitation guide with timestamps, necessary items list, and one facilitator note per section..."></textarea>
-                    </div>
-
-                    <!-- Reset button -->
-                    <div class="flex justify-end pt-2">
-                        <button onclick="resetWorkspace()" class="text-xs font-semibold text-slate-500 hover:text-red-500 flex items-center transition">
-                            <i class="fa-solid fa-trash-can mr-1.5"></i> Clear All Workspace Fields
+                            <span class="text-orange-400 mt-1 pl-2"><i id="chevron-C" class="fa-solid fa-chevron-down transition-transform duration-300"></i></span>
                         </button>
+                        <div id="content-C" class="accordion-content">
+                            <div class="border-t border-orange-200/50 mx-6 my-1"></div>
+                            <div class="p-6 pt-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-orange-800 block mb-2">Starter Template</span>
+                                    <div class="bg-white/80 border border-orange-200/60 rounded-2xl p-5 text-orange-950 italic text-sm leading-relaxed shadow-inner">I am a [role] at a [school type]. [2-3 sentences on the relevant situation or challenge].</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-orange-800 block mb-2">School Leadership Example</span>
+                                    <div class="bg-orange-100/40 border border-[#FF6B3D]/20 rounded-2xl p-5 text-orange-950 text-sm leading-relaxed">
+                                        I am a K-8 principal at a Title I urban school with 420 students and 35 staff. It's November and we've had three staff resignations and a string of difficult parent incidents that have shaken morale.
+                                        <div class="mt-4 flex justify-end">
+                                            <button onclick="applyAccordionExampleToWorkspace('C')" class="px-3.5 py-1.5 bg-[#FF6B3D] hover:bg-[#e5561f] text-white rounded-xl text-xs font-semibold flex items-center transition shadow-sm">
+                                                <i class="fa-solid fa-file-import mr-1.5"></i> Use in Workspace
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- L (Lens) -->
+                    <div id="accordion-L" class="bg-blue-50/70 hover:bg-blue-50 rounded-2xl border border-blue-100 border-l-4 border-[#0F1E3D] shadow-sm overflow-hidden transition-all duration-300">
+                        <button onclick="toggleFrameworkAccordion('L')" class="w-full flex items-start justify-between p-5 sm:p-6 text-left outline-none">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 rounded-xl bg-[#0F1E3D] text-white font-extrabold text-xl flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">L</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-blue-950 inline-block mr-2">Lens</h4>
+                                    <span class="text-sm font-semibold text-blue-800">What role should the AI play?</span>
+                                    <p class="text-sm text-blue-900/80 mt-1 leading-relaxed">Assign a specific expertise or perspective. Think: who would you call if you needed help with this? That's the Lens.</p>
+                                </div>
+                            </div>
+                            <span class="text-blue-400 mt-1 pl-2"><i id="chevron-L" class="fa-solid fa-chevron-down transition-transform duration-300"></i></span>
+                        </button>
+                        <div id="content-L" class="accordion-content">
+                            <div class="border-t border-blue-200/50 mx-6 my-1"></div>
+                            <div class="p-6 pt-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-blue-800 block mb-2">Starter Template</span>
+                                    <div class="bg-white/80 border border-blue-200/60 rounded-2xl p-5 text-blue-950 italic text-sm leading-relaxed shadow-inner">Act as a [specific expert type] who specializes in [relevant domain].</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-blue-800 block mb-2">School Leadership Example</span>
+                                    <div class="bg-blue-100/40 border border-blue-200 rounded-2xl p-5 text-blue-950 text-sm leading-relaxed">
+                                        Act as an experienced school leadership coach who specializes in building resilient school cultures in high-need urban schools.
+                                        <div class="mt-4 flex justify-end">
+                                            <button onclick="applyAccordionExampleToWorkspace('L')" class="px-3.5 py-1.5 bg-[#0F1E3D] hover:bg-[#1a2f54] text-white rounded-xl text-xs font-semibold flex items-center transition shadow-sm">
+                                                <i class="fa-solid fa-file-import mr-1.5"></i> Use in Workspace
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- E (Expectation) -->
+                    <div id="accordion-E" class="bg-teal-50/70 hover:bg-teal-50 rounded-2xl border border-teal-100 border-l-4 border-[#0FA3A3] shadow-sm overflow-hidden transition-all duration-300">
+                        <button onclick="toggleFrameworkAccordion('E')" class="w-full flex items-start justify-between p-5 sm:p-6 text-left outline-none">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 rounded-xl bg-[#0FA3A3] text-white font-extrabold text-xl flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">E</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-teal-950 inline-block mr-2">Expectation</h4>
+                                    <span class="text-sm font-semibold text-teal-700">What specifically do you need?</span>
+                                    <p class="text-sm text-teal-900/80 mt-1 leading-relaxed">Name the exact deliverable. Use action verbs. Vague asks produce vague answers — specificity is the key to quality.</p>
+                                </div>
+                            </div>
+                            <span class="text-teal-400 mt-1 pl-2"><i id="chevron-E" class="fa-solid fa-chevron-down transition-transform duration-300"></i></span>
+                        </button>
+                        <div id="content-E" class="accordion-content">
+                            <div class="border-t border-teal-200/50 mx-6 my-1"></div>
+                            <div class="p-6 pt-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-teal-800 block mb-2">Starter Template</span>
+                                    <div class="bg-white/80 border border-teal-200/60 rounded-2xl p-5 text-teal-950 italic text-sm leading-relaxed shadow-inner">Help me [specific verb + task] that achieves [intended outcome or purpose].</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-teal-800 block mb-2">School Leadership Example</span>
+                                    <div class="bg-teal-100/40 border border-[#0FA3A3]/20 rounded-2xl p-5 text-teal-950 text-sm leading-relaxed">
+                                        Design a 45-minute staff appreciation and re-energizing activity I can facilitate at our next faculty meeting to rebuild collective efficacy.
+                                        <div class="mt-4 flex justify-end">
+                                            <button onclick="applyAccordionExampleToWorkspace('E')" class="px-3.5 py-1.5 bg-[#0FA3A3] hover:bg-[#0c8282] text-white rounded-xl text-xs font-semibold flex items-center transition shadow-sm">
+                                                <i class="fa-solid fa-file-import mr-1.5"></i> Use in Workspace
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- A (Audience) -->
+                    <div id="accordion-A" class="bg-orange-50/50 hover:bg-orange-50 rounded-2xl border border-orange-100/80 border-l-4 border-[#FF6B3D]/60 shadow-sm overflow-hidden transition-all duration-300">
+                        <button onclick="toggleFrameworkAccordion('A')" class="w-full flex items-start justify-between p-5 sm:p-6 text-left outline-none">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 rounded-xl text-white font-extrabold text-xl flex items-center justify-center mr-4 flex-shrink-0 shadow-sm" style="background: linear-gradient(135deg, #FF6B3D, #0FA3A3);">A</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-slate-900 inline-block mr-2">Audience</h4>
+                                    <span class="text-sm font-semibold text-orange-700">Who is this for?</span>
+                                    <p class="text-sm text-slate-700 mt-1 leading-relaxed">Describe who will read, hear, or use this output. The AI calibrates tone, vocabulary, and depth to match the real people involved.</p>
+                                </div>
+                            </div>
+                            <span class="text-orange-400 mt-1 pl-2"><i id="chevron-A" class="fa-solid fa-chevron-down transition-transform duration-300"></i></span>
+                        </button>
+                        <div id="content-A" class="accordion-content">
+                            <div class="border-t border-orange-200/50 mx-6 my-1"></div>
+                            <div class="p-6 pt-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-orange-800 block mb-2">Starter Template</span>
+                                    <div class="bg-white/80 border border-orange-200/60 rounded-2xl p-5 text-slate-800 italic text-sm leading-relaxed shadow-inner">My audience is [who] who [relevant characteristics, needs, or context].</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-orange-800 block mb-2">School Leadership Example</span>
+                                    <div class="bg-orange-100/30 border border-orange-200/50 rounded-2xl p-5 text-slate-800 text-sm leading-relaxed">
+                                        My audience is a mix of veteran teachers (10+ years) and newer teachers in years 1-2, many of whom are questioning whether they made the right career choice.
+                                        <div class="mt-4 flex justify-end">
+                                            <button onclick="applyAccordionExampleToWorkspace('A')" class="px-3.5 py-1.5 text-white rounded-xl text-xs font-semibold flex items-center transition shadow-sm" style="background: linear-gradient(135deg, #FF6B3D, #0FA3A3);">
+                                                <i class="fa-solid fa-file-import mr-1.5"></i> Use in Workspace
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- R (Result Format) -->
+                    <div id="accordion-R" class="bg-violet-50/70 hover:bg-violet-50 rounded-2xl border border-violet-100 border-l-4 border-[#7C3AED] shadow-sm overflow-hidden transition-all duration-300">
+                        <button onclick="toggleFrameworkAccordion('R')" class="w-full flex items-start justify-between p-5 sm:p-6 text-left outline-none">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 rounded-xl bg-[#7C3AED] text-white font-extrabold text-xl flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">R</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-violet-950 inline-block mr-2">Result Format</h4>
+                                    <span class="text-sm font-semibold text-violet-700">How do you want it delivered?</span>
+                                    <p class="text-sm text-violet-900/80 mt-1 leading-relaxed">Specify format, structure, length, and constraints. Tell the AI exactly how to package the response so it's immediately usable.</p>
+                                </div>
+                            </div>
+                            <span class="text-violet-400 mt-1 pl-2"><i id="chevron-R" class="fa-solid fa-chevron-down transition-transform duration-300"></i></span>
+                        </button>
+                        <div id="content-R" class="accordion-content">
+                            <div class="border-t border-violet-200/50 mx-6 my-1"></div>
+                            <div class="p-6 pt-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-violet-800 block mb-2">Starter Template</span>
+                                    <div class="bg-white/80 border border-violet-200/60 rounded-2xl p-5 text-violet-950 italic text-sm leading-relaxed shadow-inner">Give me a [format] with [specific sections]. Include [requirements]. Keep it [length or tone constraint].</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-violet-800 block mb-2">School Leadership Example</span>
+                                    <div class="bg-violet-100/40 border border-violet-200 rounded-2xl p-5 text-violet-950 text-sm leading-relaxed">
+                                        Give me a step-by-step facilitation guide with: a warm-up (10 min), main activity (25 min), and closing ritual (10 min). Include timing, materials, and one facilitator tip per section.
+                                        <div class="mt-4 flex justify-end">
+                                            <button onclick="applyAccordionExampleToWorkspace('R')" class="px-3.5 py-1.5 bg-[#7C3AED] hover:bg-[#5B21B6] text-white rounded-xl text-xs font-semibold flex items-center transition shadow-sm">
+                                                <i class="fa-solid fa-file-import mr-1.5"></i> Use in Workspace
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
+            </section>
 
-                <!-- Preview Side (5/12 grid columns) -->
-                <div class="lg:col-span-5 lg:sticky lg:top-24 space-y-6">
-                    <div class="bg-indigo-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-indigo-900 relative overflow-hidden">
-                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-indigo-900/30 rounded-full blur-2xl"></div>
-                        <div class="flex items-center justify-between border-b border-indigo-900 pb-4 mb-4">
-                            <span class="text-xs font-bold uppercase tracking-widest text-[#FFD39C]">Live Prompt Preview</span>
-                            <div class="flex space-x-1.5">
-                                <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
-                                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
-                                <span class="w-2.5 h-2.5 rounded-full bg-[#FFD39C]"></span>
+            <!-- PROMPT BUILDER SECTION -->
+            <section id="generator" class="mb-16 scroll-mt-28">
+                <div class="text-center mb-10">
+                    <span class="text-xs font-bold uppercase tracking-widest" style="color: var(--brand-secondary)">Prompt Workspace</span>
+                    <h2 class="text-3xl font-extrabold text-[#0F1E3D] mt-1">The CLEAR Prompt Creator</h2>
+                    <p class="text-slate-500 mt-2 max-w-2xl mx-auto text-sm">Fill in each component below to automatically construct a professional, hyper-targeted administrative prompt. Your draft is saved automatically.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+                    <!-- Inputs (left) -->
+                    <div class="lg:col-span-7 glass-panel rounded-3xl p-6 sm:p-8 space-y-6">
+
+                        <!-- C -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="block text-sm font-bold text-slate-800 flex items-center">
+                                    <span class="w-6 h-6 rounded-md bg-[#FF6B3D] text-white font-extrabold text-xs flex items-center justify-center mr-2">C</span>
+                                    Context <span class="text-slate-400 font-normal text-xs ml-1">(Your situation)</span>
+                                </label>
+                                <div class="relative inline-block text-left">
+                                    <button type="button" onclick="toggleDropdown('context-dropdown')" class="text-xs text-[#FF6B3D] hover:text-[#e5561f] font-bold flex items-center bg-orange-50 px-2.5 py-1 rounded-md transition border border-orange-200">
+                                        Quick-Fill <i class="fa-solid fa-chevron-down ml-1"></i>
+                                    </button>
+                                    <div id="context-dropdown" class="hidden absolute right-0 mt-1 w-64 rounded-xl bg-white shadow-xl border border-slate-200 z-50">
+                                        <div class="py-1 text-xs">
+                                            <button onclick="quickFill('context', 'Title I Elementary School, suburban campus, undergoing a new technology integration program this semester.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Title I Elementary (Suburban)</button>
+                                            <button onclick="quickFill('context', 'A large urban High School with 1,800 students. Seeking ways to improve student attendance rates after winter break.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Urban High School Attendance</button>
+                                            <button onclick="quickFill('context', 'A K-12 private school with 500 students, preparing for state board compliance visits occurring next month.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Board Compliance Prep</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            <textarea id="input-C" oninput="compilePrompt()" rows="3" class="w-full rounded-xl border border-slate-200 p-3 text-sm focus:ring-2 focus:ring-[#FF6B3D] focus:border-[#FF6B3D] outline-none transition bg-white/80" placeholder="e.g. I am a principal at a Title I elementary school with 400 students. We are experiencing declining parent volunteerism..."></textarea>
                         </div>
 
-                        <!-- Real-time generated text container -->
-                        <div class="min-h-[220px] max-h-[350px] overflow-y-auto bg-indigo-900/40 rounded-2xl p-4 border border-indigo-800/80 mb-4 text-sm font-mono leading-relaxed select-all" id="prompt-preview">
-                            <span class="text-slate-400 italic">Start typing in the fields on the left or load one of the quick fill elements or worked examples below to view your fully structured prompt here in real-time...</span>
+                        <!-- L -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="block text-sm font-bold text-slate-800 flex items-center">
+                                    <span class="w-6 h-6 rounded-md bg-[#0F1E3D] text-white font-extrabold text-xs flex items-center justify-center mr-2">L</span>
+                                    Lens <span class="text-slate-400 font-normal text-xs ml-1">(AI's expert role)</span>
+                                </label>
+                                <div class="relative inline-block text-left">
+                                    <button type="button" onclick="toggleDropdown('lens-dropdown')" class="text-xs text-[#0F1E3D] hover:text-slate-700 font-medium flex items-center bg-slate-100 px-2 py-1 rounded-md transition border border-slate-200">
+                                        Quick-Fill <i class="fa-solid fa-chevron-down ml-1"></i>
+                                    </button>
+                                    <div id="lens-dropdown" class="hidden absolute right-0 mt-1 w-64 rounded-xl bg-white shadow-xl border border-slate-200 z-50">
+                                        <div class="py-1 text-xs">
+                                            <button onclick="quickFill('lens', 'Act as an expert educational leadership coach with decades of experience guiding urban school administrators through cultural pivots.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Leadership Coach</button>
+                                            <button onclick="quickFill('lens', 'Act as an expert school crisis PR consultant who specializes in transparent, empathetic parent communications.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Crisis PR Consultant</button>
+                                            <button onclick="quickFill('lens', 'Act as an instructional design expert specializing in restorative-driven teacher professional development.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Instructional Designer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <textarea id="input-L" oninput="compilePrompt()" rows="2" class="w-full rounded-xl border border-slate-200 p-3 text-sm focus:ring-2 focus:ring-[#0F1E3D] focus:border-[#0F1E3D] outline-none transition bg-white/80" placeholder="e.g. Act as an experienced school leadership coach specializing in building resilient staff cultures..."></textarea>
                         </div>
 
-                        <!-- Action Buttons -->
-                        <div class="space-y-3">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <button onclick="copyToClipboard()" class="py-3.5 bg-gradient-to-r from-[#FFD39C] to-[#E5A95E] text-indigo-950 hover:from-[#FFE0B8] hover:to-[#FFD39C] font-bold rounded-xl text-sm transition shadow-lg shadow-[#FFD39C]/10 flex items-center justify-center">
+                        <!-- E -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="block text-sm font-bold text-slate-800 flex items-center">
+                                    <span class="w-6 h-6 rounded-md bg-[#0FA3A3] text-white font-extrabold text-xs flex items-center justify-center mr-2">E</span>
+                                    Expectation <span class="text-slate-400 font-normal text-xs ml-1">(Your exact need)</span>
+                                </label>
+                                <div class="relative inline-block text-left">
+                                    <button type="button" onclick="toggleDropdown('expectation-dropdown')" class="text-xs text-[#0FA3A3] hover:text-[#0c8282] font-bold flex items-center bg-teal-50 px-2.5 py-1 rounded-md transition border border-teal-200">
+                                        Quick-Fill <i class="fa-solid fa-chevron-down ml-1"></i>
+                                    </button>
+                                    <div id="expectation-dropdown" class="hidden absolute right-0 mt-1 w-64 rounded-xl bg-white shadow-xl border border-slate-200 z-50">
+                                        <div class="py-1 text-xs">
+                                            <button onclick="quickFill('expectation', 'Design a highly engaging, restorative 45-minute professional development agenda to improve teacher wellness.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Wellness PD Session Agenda</button>
+                                            <button onclick="quickFill('expectation', 'Draft an empathetic, informative, and reassurance-driven parent email addressing local weather concerns and school safety plans.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Safety Parent Communication</button>
+                                            <button onclick="quickFill('expectation', 'Construct a restorative behavior intervention matrix with progressive pathways for disruptive classroom behaviors.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Behavior Intervention Matrix</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <textarea id="input-E" oninput="compilePrompt()" rows="3" class="w-full rounded-xl border border-slate-200 p-3 text-sm focus:ring-2 focus:ring-[#0FA3A3] focus:border-[#0FA3A3] outline-none transition bg-white/80" placeholder="e.g. Design a 45-minute staff appreciation activity that I can facilitate at our upcoming faculty meeting..."></textarea>
+                        </div>
+
+                        <!-- A -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="block text-sm font-bold text-slate-800 flex items-center">
+                                    <span class="w-6 h-6 rounded-md text-white font-extrabold text-xs flex items-center justify-center mr-2" style="background: linear-gradient(135deg, #FF6B3D, #0FA3A3);">A</span>
+                                    Audience <span class="text-slate-400 font-normal text-xs ml-1">(Who is reading this)</span>
+                                </label>
+                                <div class="relative inline-block text-left">
+                                    <button type="button" onclick="toggleDropdown('audience-dropdown')" class="text-xs text-[#FF6B3D] hover:text-[#e5561f] font-bold flex items-center bg-orange-50 px-2.5 py-1 rounded-md transition border border-orange-200">
+                                        Quick-Fill <i class="fa-solid fa-chevron-down ml-1"></i>
+                                    </button>
+                                    <div id="audience-dropdown" class="hidden absolute right-0 mt-1 w-64 rounded-xl bg-white shadow-xl border border-slate-200 z-50">
+                                        <div class="py-1 text-xs">
+                                            <button onclick="quickFill('audience', 'A mix of veteran teachers (15+ years experience) and newly recruited teachers, who appreciate hands-on, non-condescending collaboration.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Mixed Experience Faculty</button>
+                                            <button onclick="quickFill('audience', 'Busy school parents and community guardians who need quick, reassuring updates with accessible language (no technical jargon).')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Parents & Caregivers</button>
+                                            <button onclick="quickFill('audience', 'School Board Trustees and District leadership, who look for evidence-backed metrics and fiscal transparency.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Board Trustees & District Execs</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <textarea id="input-A" oninput="compilePrompt()" rows="2" class="w-full rounded-xl border border-slate-200 p-3 text-sm focus:ring-2 focus:ring-[#FF6B3D] focus:border-[#FF6B3D] outline-none transition bg-white/80" placeholder="e.g. My audience is a mix of veteran teachers and 1st-year teachers who are currently feeling highly fatigued..."></textarea>
+                        </div>
+
+                        <!-- R -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="block text-sm font-bold text-slate-800 flex items-center">
+                                    <span class="w-6 h-6 rounded-md bg-[#7C3AED] text-white font-extrabold text-xs flex items-center justify-center mr-2">R</span>
+                                    Result Format <span class="text-slate-400 font-normal text-xs ml-1">(Output structure)</span>
+                                </label>
+                                <div class="relative inline-block text-left">
+                                    <button type="button" onclick="toggleDropdown('format-dropdown')" class="text-xs text-violet-700 hover:text-violet-900 font-medium flex items-center bg-violet-50 px-2 py-1 rounded-md transition border border-violet-200">
+                                        Quick-Fill <i class="fa-solid fa-chevron-down ml-1"></i>
+                                    </button>
+                                    <div id="format-dropdown" class="hidden absolute right-0 mt-1 w-64 rounded-xl bg-white shadow-xl border border-slate-200 z-50">
+                                        <div class="py-1 text-xs">
+                                            <button onclick="quickFill('format', 'Provide a clear, step-by-step facilitation roadmap containing: warm-up (10 min), main exercise (25 min), action steps (10 min). Include materials needed and facilitator tips.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Step-by-Step Roadmap</button>
+                                            <button onclick="quickFill('format', 'An administrative email with a highly supportive Subject Line, 3 distinct paragraph sections (The Issue, The Response, The Resources), and clear bullet points for vital resources.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Formatted Parent Email</button>
+                                            <button onclick="quickFill('format', 'Organized as a clean markdown table. Columns must include: Behavior Level, Admin Intervention Protocol, Restorative Action Prompt, and Escalation Criteria.')" class="block w-full text-left px-4 py-2 hover:bg-slate-50 transition text-slate-700">Clean Markdown Table</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <textarea id="input-R" oninput="compilePrompt()" rows="2" class="w-full rounded-xl border border-slate-200 p-3 text-sm focus:ring-2 focus:ring-violet-500 focus:border-violet-500 outline-none transition bg-white/80" placeholder="e.g. A bulleted step-by-step facilitation guide with timestamps, necessary items list, and one facilitator note per section..."></textarea>
+                        </div>
+
+                        <div class="flex justify-end pt-2">
+                            <button onclick="resetWorkspace()" class="text-xs font-semibold text-slate-400 hover:text-red-500 flex items-center transition">
+                                <i class="fa-solid fa-trash-can mr-1.5"></i> Clear All Fields
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Preview (right) -->
+                    <div class="lg:col-span-5 lg:sticky lg:top-28 space-y-5">
+                        <div class="rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden" style="background: linear-gradient(160deg, #0F1E3D 0%, #162a4a 100%);">
+                            <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-2xl" style="background: rgba(255,107,61,0.15);"></div>
+                            <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+                                <span class="text-xs font-bold uppercase tracking-widest text-[#FF6B3D]">Live Prompt Preview</span>
+                                <div class="flex space-x-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#0FA3A3]"></span>
+                                </div>
+                            </div>
+                            <div class="min-h-[220px] max-h-[350px] overflow-y-auto bg-white/5 rounded-2xl p-4 border border-white/10 mb-4 text-sm font-mono leading-relaxed select-all text-slate-200" id="prompt-preview">
+                                <span class="text-slate-400 italic">Start typing in the fields on the left to view your fully structured prompt here in real-time...</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="copyToClipboard()" class="py-3.5 font-bold rounded-xl text-sm transition shadow-lg flex items-center justify-center text-[#0F1E3D]" style="background: linear-gradient(135deg, #FF6B3D, #e5561f); color: white;">
                                     <i class="fa-solid fa-copy mr-2"></i> Copy Prompt
                                 </button>
-                                <button onclick="downloadPromptFile()" class="py-3.5 bg-indigo-900 hover:bg-indigo-800 text-[#FFD39C] hover:text-white font-bold rounded-xl text-sm transition border border-indigo-800/80 flex items-center justify-center">
+                                <button onclick="downloadPromptFile()" class="py-3.5 font-bold rounded-xl text-sm transition border border-white/20 hover:bg-white/10 flex items-center justify-center text-[#0FA3A3]">
                                     <i class="fa-solid fa-file-arrow-down mr-2"></i> Download .txt
                                 </button>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Helpful Notice -->
-                    <div class="bg-indigo-50 rounded-2xl p-5 border border-indigo-100 flex items-start space-x-3.5">
-                        <div class="bg-indigo-600 text-white p-2 rounded-lg flex items-center justify-center mt-0.5 shadow-sm">
-                            <i class="fa-solid fa-brain text-sm"></i>
-                        </div>
-                        <div>
-                            <h5 class="text-sm font-bold text-indigo-950">EIL Leadership Tip</h5>
-                            <p class="text-xs text-indigo-900/80 mt-1 leading-relaxed">
-                                Avoid prompt jargon! You don't need to write "be incredibly creative" or "be brilliant." The specificity of your **Context** and the constraints in your **Result Format** are what elevate the final output quality.
-                            </p>
+                        <!-- EIL Tip -->
+                        <div class="glass-panel rounded-2xl p-5 flex items-start space-x-3.5 bouncy-hover">
+                            <div class="p-2 rounded-lg flex items-center justify-center mt-0.5 shadow-sm flex-shrink-0" style="background: linear-gradient(135deg, #FF6B3D, #0FA3A3);">
+                                <i class="fa-solid fa-lightbulb text-white text-sm"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-bold text-[#0F1E3D]">EIL Leadership Tip</h5>
+                                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                    Avoid vague prompt adjectives! The specificity of your <strong>Context</strong> and the constraints in your <strong>Result Format</strong> are what elevate the final output quality — not phrases like "be incredibly creative."
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="examples" class="mb-16 scroll-mt-24">
-            <div class="text-center mb-10">
-                <span class="text-xs font-bold uppercase tracking-wider text-[#C28C4A]">Learning Center</span>
-                <h3 class="text-3xl font-extrabold text-slate-900 mt-1">Worked Leadership Examples</h3>
-                <p class="text-slate-600 mt-2 max-w-2xl mx-auto">Compare a non-structured "Weak Prompt" with a "CLEAR-engineered" prompt side-by-side. Click any of the library assets to load them into the workspace generator.</p>
-            </div>
+            <!-- WORKED EXAMPLES SECTION -->
+            <section id="examples" class="mb-16 scroll-mt-28">
+                <div class="text-center mb-10">
+                    <span class="text-xs font-bold uppercase tracking-widest" style="color: var(--brand-secondary)">Learning Center</span>
+                    <h2 class="text-3xl font-extrabold text-[#0F1E3D] mt-1">Worked Leadership Examples</h2>
+                    <p class="text-slate-500 mt-2 max-w-2xl mx-auto text-sm">Compare a "Weak Prompt" against a CLEAR-engineered prompt side-by-side. Click any example to load it into the workspace.</p>
+                </div>
 
-            <!-- Example 1 Showcase (The Staff Morale - Detailed Context) -->
-            <div class="bg-white rounded-3xl border border-slate-200 shadow-md p-6 sm:p-8 mb-8">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-100 pb-4 mb-6">
+                <!-- Example 1 -->
+                <div class="glass-panel rounded-3xl p-6 sm:p-8 mb-6 bouncy-hover">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-100 pb-4 mb-6">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-[#FF6B3D]/10 text-[#FF6B3D] flex items-center justify-center font-extrabold text-sm">01</div>
+                            <div>
+                                <h4 class="text-base font-bold text-[#0F1E3D]">Staff Morale & Resilience Building</h4>
+                                <p class="text-xs text-slate-500">Perfect for K-8 & High School Administration</p>
+                            </div>
+                        </div>
+                        <button onclick="loadWorkedExample(1)" class="mt-4 sm:mt-0 text-xs font-bold text-[#FF6B3D] bg-orange-50 hover:bg-orange-100 px-4 py-2 rounded-xl transition border border-orange-200 flex items-center">
+                            <i class="fa-solid fa-file-import mr-1.5"></i> Load into Workspace
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                            <div class="flex items-center space-x-2 text-red-500 mb-3">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                <span class="text-xs font-extrabold uppercase tracking-wider">The Weak Prompt</span>
+                            </div>
+                            <blockquote class="text-sm font-mono text-slate-600 italic">"Help me with staff morale."</blockquote>
+                            <p class="text-xs text-slate-500 mt-4 leading-relaxed"><strong class="text-slate-700">Why this fails:</strong> The AI has no context, no role, no deliverable, and no idea who the audience is.</p>
+                        </div>
+                        <div class="rounded-2xl p-5 border relative" style="background: linear-gradient(160deg, #0F1E3D 0%, #162a4a 100%); border-color: rgba(255,107,61,0.3);">
+                            <div class="flex items-center space-x-2 text-[#FF6B3D] mb-3">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span class="text-xs font-extrabold uppercase tracking-wider">The CLEAR Engineered Prompt</span>
+                            </div>
+                            <div class="space-y-2.5 text-xs font-mono text-slate-200">
+                                <p><strong class="text-[#FF6B3D]">CONTEXT:</strong> I am a K-8 principal at a Title I urban school with 420 students and 35 staff. It's November and we've had three staff resignations and a string of difficult parent incidents that have shaken morale.</p>
+                                <p><strong class="text-[#FF6B3D]">LENS:</strong> Act as an experienced school leadership coach who specializes in building resilient school cultures in high-need urban schools.</p>
+                                <p><strong class="text-[#FF6B3D]">EXPECTATION:</strong> Design a 45-minute staff appreciation and re-energizing activity I can facilitate at our next faculty meeting to rebuild collective efficacy.</p>
+                                <p><strong class="text-[#FF6B3D]">AUDIENCE:</strong> My audience is a mix of veteran teachers (10+ years) and newer teachers in years 1-2, many of whom are questioning whether they made the right career choice.</p>
+                                <p><strong class="text-[#FF6B3D]">RESULT FORMAT:</strong> Give me a step-by-step facilitation guide with: a warm-up (10 min), main activity (25 min), and closing ritual (10 min). Include timing, materials, and one facilitator tip per section.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example 2 & 3 grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between bouncy-hover">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 bg-orange-50 text-[#FF6B3D] rounded-full text-xs font-bold border border-orange-200">Crisis Parent Communication</span>
+                                <span class="text-slate-400 text-xs">Ex. 02</span>
+                            </div>
+                            <h4 class="font-bold text-[#0F1E3D] mb-2">Power Outage Response Update</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-4">How to outline a high-stakes contextual message explaining school adjustments due to sudden utility system breakdowns without causing alarm.</p>
+                        </div>
+                        <button onclick="loadWorkedExample(2)" class="w-full py-2 bg-slate-50 hover:bg-orange-50 hover:text-[#FF6B3D] text-slate-700 font-semibold rounded-xl text-xs transition border border-slate-200">Load This Example</button>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-6 flex flex-col justify-between bouncy-hover">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 bg-teal-50 text-[#0FA3A3] rounded-full text-xs font-bold border border-teal-200">Instructional Leadership PD</span>
+                                <span class="text-slate-400 text-xs">Ex. 03</span>
+                            </div>
+                            <h4 class="font-bold text-[#0F1E3D] mb-2">Restorative Discipline Training Roadmap</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed mb-4">Structuring a clear, practical curriculum path for training department heads on handling restorative classroom discipline in critical high-school modules.</p>
+                        </div>
+                        <button onclick="loadWorkedExample(3)" class="w-full py-2 bg-slate-50 hover:bg-teal-50 hover:text-[#0FA3A3] text-slate-700 font-semibold rounded-xl text-xs transition border border-slate-200">Load This Example</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER — matches homepage style -->
+        <footer class="mx-4 mb-4 rounded-3xl text-white py-10 px-8" style="background: linear-gradient(160deg, #0F1E3D 0%, #162a4a 100%);">
+            <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-start justify-between gap-8 mb-8">
+                <div class="space-y-3">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-[#FB6F07]/10 text-[#FB6F07] flex items-center justify-center font-extrabold">
-                            01
+                        <div class="relative w-10 h-10 rounded-full overflow-hidden border border-white/20 bg-slate-800 flex-shrink-0">
+                            <img src="../EIL%20Logo%20PNJ%20small.png" alt="EIL Logo" class="w-full h-full object-cover" onerror="this.style.display='none';">
                         </div>
                         <div>
-                            <h4 class="text-lg font-bold text-slate-900">Staff Morale & Resilience Building</h4>
-                            <p class="text-xs text-slate-500">Perfect for K-8 & High School Administration</p>
+                            <span class="font-extrabold text-sm tracking-wide block leading-none">THE EDUCATOR</span>
+                            <span class="text-xs tracking-wider uppercase font-extrabold block mt-0.5 text-[#0FA3A3]">INNOVATION LABS</span>
                         </div>
                     </div>
-                    <button onclick="loadWorkedExample(1)" class="mt-4 sm:mt-0 text-xs font-bold text-[#FB6F07] bg-[#FB6F07]/10 hover:bg-[#FB6F07]/20 px-4 py-2 rounded-xl transition border border-[#FB6F07]/20 flex items-center">
-                        <i class="fa-solid fa-file-import mr-1.5"></i> Load This into Creator Workspace
-                    </button>
+                    <p class="text-slate-400 text-xs leading-relaxed max-w-xs">Reimagining educational leadership through accessible AI frameworks, empowering administrators to build collaborative campuses.</p>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Weak prompt -->
-                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200">
-                        <div class="flex items-center space-x-2 text-red-500 mb-3">
-                            <i class="fa-solid fa-circle-xmark"></i>
-                            <span class="text-xs font-extrabold uppercase tracking-wider">The Weak Prompt</span>
-                        </div>
-                        <blockquote class="text-sm font-mono text-slate-600 italic">
-                            "Help me with staff morale."
-                        </blockquote>
-                        <p class="text-xs text-slate-500 mt-4 leading-relaxed">
-                            <strong class="text-slate-700">Why this fails:</strong> The AI has no clue what resources you have, what context your staff is in, who you're talking to, or what exact deliverable fits your upcoming meeting schedule.
-                        </p>
-                    </div>
-
-                    <!-- Engineered prompt -->
-                    <div class="bg-indigo-950 text-indigo-100 p-5 rounded-2xl border border-indigo-900 relative">
-                        <div class="flex items-center space-x-2 text-[#FFD39C] mb-3">
-                            <i class="fa-solid fa-circle-check"></i>
-                            <span class="text-xs font-extrabold uppercase tracking-wider">The CLEAR Engineered Prompt</span>
-                        </div>
-                        <div class="space-y-2.5 text-xs font-mono">
-                            <p><strong class="text-[#FFD39C]">CONTEXT:</strong> I am a K-8 principal at a Title I urban school with 420 students and 35 staff. It's November and we've had three staff resignations and a string of difficult parent incidents that have shaken morale.</p>
-                            <p><strong class="text-[#FFD39C]">LENS:</strong> Act as an experienced school leadership coach who specializes in building resilient school cultures in high-need urban schools.</p>
-                            <p><strong class="text-[#FFD39C]">EXPECTATION:</strong> Design a 45-minute staff appreciation and re-energizing activity I can facilitate at our next faculty meeting to rebuild collective efficacy.</p>
-                            <p><strong class="text-[#FFD39C]">AUDIENCE:</strong> My audience is a mix of veteran teachers (10+ years) and newer teachers in years 1-2, many of whom are questioning whether they made the right career choice.</p>
-                            <p><strong class="text-[#FFD39C]">RESULT FORMAT:</strong> Give me a step-by-step facilitation guide with: a warm-up (10 min), main activity (25 min), and closing ritual (10 min). Include timing, materials, and one facilitator tip per section.</p>
-                        </div>
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-[#FF6B3D] mb-3">Administrative Support</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-3 max-w-xs">Need customized prompt workshops or integration strategies for your district? Reach out to Educator Innovation Labs.</p>
+                    <div class="flex space-x-4 text-slate-400 text-xl">
+                        <a href="https://www.instagram.com/educatorinnovationlabs/" target="_blank" class="hover:text-[#FF6B3D] transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/EducatorInnovationLabs/" target="_blank" class="hover:text-[#FF6B3D] transition"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.linkedin.com/in/danyelburgett" target="_blank" class="hover:text-[#FF6B3D] transition"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://x.com/danyelburgett" target="_blank" class="hover:text-[#FF6B3D] transition"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.youtube.com/@EducatorInnovationLabs" target="_blank" class="hover:text-[#FF6B3D] transition"><i class="fa-brands fa-youtube"></i></a>
                     </div>
                 </div>
             </div>
-
-            <!-- More library options -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Example 2 -->
-                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="px-2.5 py-1 bg-[#FB6F07]/10 text-[#FB6F07] rounded-full text-xs font-bold">Crisis Parent Communication</span>
-                            <span class="text-slate-400 text-xs">Ex. 02</span>
-                        </div>
-                        <h4 class="font-bold text-slate-950 mb-2">Power Outage Response Update</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed mb-4">
-                            How to outline a high-stakes contextual message explaining school adjustments due to sudden utility system breakdowns without causing alarm.
-                        </p>
-                    </div>
-                    <button onclick="loadWorkedExample(2)" class="w-full py-2 bg-slate-50 hover:bg-[#FB6F07]/10 hover:text-[#FB6F07] text-slate-700 font-semibold rounded-xl text-xs transition border border-slate-200">
-                        Load This Example
-                    </button>
-                </div>
-
-                <!-- Example 3 -->
-                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="px-2.5 py-1 bg-indigo-50 text-[#092B62] rounded-full text-xs font-bold">Instructional Leadership PD</span>
-                            <span class="text-slate-400 text-xs">Ex. 03</span>
-                        </div>
-                        <h4 class="font-bold text-slate-950 mb-2">Restorative Discipline Training Roadmap</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed mb-4">
-                            Structuring a clear, practical curriculum path for training department heads on handling restorative classroom discipline in critical high-school modules.
-                        </p>
-                    </div>
-                    <button onclick="loadWorkedExample(3)" class="w-full py-2 bg-slate-50 hover:bg-[#FB6F07]/10 hover:text-[#FB6F07] text-slate-700 font-semibold rounded-xl text-xs transition border border-slate-200">
-                        Load This Example
-                    </button>
-                </div>
+            <div class="border-t border-white/10 pt-6 text-center text-xs text-slate-500 space-y-1">
+                <p class="font-semibold text-slate-400">Copyright 2026 — Educator Innovation Labs</p>
+                <p class="italic text-[11px]">Educator Innovation Labs designed and created the CLEAR framework using AI as a design partner.</p>
             </div>
-        </section>
+        </footer>
 
-    </main>
-
-    <!-- Footer Section -->
-    <footer class="bg-indigo-950 text-white border-t border-indigo-900 py-12 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div class="space-y-3">
-                <div class="flex items-center space-x-2.5">
-                    <div class="bg-[#FFD39C] p-1.5 rounded-lg text-indigo-950">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </div>
-                    <span class="font-bold tracking-tight text-lg">Educator Innovation Labs</span>
-                </div>
-                <p class="text-slate-400 text-xs leading-relaxed max-w-sm">
-                    Reimagining educational leadership through accessible AI frameworks, empowering administrators with robust technology processes that build collaborative campuses.
-                </p>
-            </div>
-            <div>
-                <h4 class="text-sm font-bold uppercase tracking-wider text-[#FFD39C] mb-3">Administrative Support</h4>
-                <p class="text-xs text-slate-400 leading-relaxed mb-3">
-                    Need customized prompt workshops or integration strategies designed for your school district? Reach out to Educator Innovation Labs.
-                </p>
-                <div class="flex space-x-3 text-slate-400 text-lg">
-                    <a href="#" class="hover:text-[#FFD39C] transition"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="#" class="hover:text-[#FFD39C] transition"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#" class="hover:text-[#FFD39C] transition"><i class="fa-solid fa-envelope"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto border-t border-indigo-900/60 pt-6 text-center text-xs text-slate-500 space-y-2">
-            <p class="text-xs text-slate-400 font-semibold mb-1">Copyright 2026- Educator Innovation Labs</p>
-            <p class="text-[11px] text-slate-400 italic">Educator Innovation Labs designed and created the CLEAR framework using AI as a design partner.</p>
-        </div>
-    </footer>
+    </div><!-- end animated-grid wrapper -->
 
     <script>
-        // Expanded accordion examples data mapping matching Context (C), Lens (L) etc screenshots verbatim
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('hamburger-icon');
+            const isHidden = menu.classList.contains('hidden');
+            menu.classList.toggle('hidden', !isHidden);
+            icon.classList.toggle('fa-bars', !isHidden);
+            icon.classList.toggle('fa-xmark', isHidden);
+        }
+
         const examplesData = {
             'C': "I am a K-8 principal at a Title I urban school with 420 students and 35 staff. It's November and we've had three staff resignations and a string of difficult parent incidents that have shaken morale.",
             'L': "Act as an experienced school leadership coach who specializes in building resilient school cultures in high-need urban schools.",
@@ -686,204 +676,142 @@
             'R': "Give me a step-by-step facilitation guide with: a warm-up (10 min), main activity (25 min), and closing ritual (10 min). Include timing, materials, and one facilitator tip per section."
         };
 
-        // Handles the accordion view actions based on Screenshot 2026-06-15 at 2.16.10 PM.png
         function toggleFrameworkAccordion(letter) {
             const letters = ['C', 'L', 'E', 'A', 'R'];
-            
             letters.forEach(l => {
-                const accordionContainer = document.getElementById(`accordion-${l}`);
-                const contentPanel = document.getElementById(`content-${l}`);
-                const chevronIcon = document.getElementById(`chevron-${l}`);
-
+                const content = document.getElementById(`content-${l}`);
+                const chevron = document.getElementById(`chevron-${l}`);
                 if (l === letter) {
-                    const isClosed = !contentPanel.classList.contains('active');
-                    if (isClosed) {
-                        contentPanel.classList.add('active');
-                        chevronIcon.classList.add('rotate-180');
-                        accordionContainer.classList.add('border-slate-300', 'shadow-md');
-                    } else {
-                        contentPanel.classList.remove('active');
-                        chevronIcon.classList.remove('rotate-180');
-                        accordionContainer.classList.remove('border-slate-300', 'shadow-md');
-                    }
+                    const isClosed = !content.classList.contains('active');
+                    content.classList.toggle('active', isClosed);
+                    chevron.classList.toggle('rotate-180', isClosed);
                 } else {
-                    // Close others to guarantee clean focus like standard accordion
-                    contentPanel.classList.remove('active');
-                    chevronIcon.classList.remove('rotate-180');
-                    accordionContainer.classList.remove('border-slate-300', 'shadow-md');
+                    content.classList.remove('active');
+                    chevron.classList.remove('rotate-180');
                 }
             });
         }
 
-        // Apply an expanded example element from the accordion panel into the workspace generator text field
         function applyAccordionExampleToWorkspace(letter) {
-            const dataText = examplesData[letter];
-            const targetTextArea = document.getElementById(`input-${letter}`);
-            targetTextArea.value = dataText;
+            document.getElementById(`input-${letter}`).value = examplesData[letter];
             compilePrompt();
             saveDraftToLocalStorage();
-            showToast(`Injected ${letter} element directly to creator workspace!`, 'success');
-            
-            // Highlight target workspace field
-            targetTextArea.focus();
-            targetTextArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast(`${letter} element loaded into workspace!`, 'success');
+            document.getElementById(`input-${letter}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        // Dropdown toggle mechanism
         function toggleDropdown(id) {
             const el = document.getElementById(id);
             const isHidden = el.classList.contains('hidden');
-            
-            // Close all dropdowns
-            ['context-dropdown', 'lens-dropdown', 'expectation-dropdown', 'audience-dropdown', 'format-dropdown'].forEach(dId => {
-                document.getElementById(dId).classList.add('hidden');
+            ['context-dropdown','lens-dropdown','expectation-dropdown','audience-dropdown','format-dropdown'].forEach(d => {
+                document.getElementById(d).classList.add('hidden');
             });
-
             if (isHidden) el.classList.remove('hidden');
         }
 
-        // Close dropdowns on window clicks outside
         window.addEventListener('click', function(e) {
             if (!e.target.closest('.relative')) {
-                ['context-dropdown', 'lens-dropdown', 'expectation-dropdown', 'audience-dropdown', 'format-dropdown'].forEach(dId => {
-                    document.getElementById(dId).classList.add('hidden');
+                ['context-dropdown','lens-dropdown','expectation-dropdown','audience-dropdown','format-dropdown'].forEach(d => {
+                    document.getElementById(d).classList.add('hidden');
                 });
             }
         });
 
-        // Quick-Fill logic to insert custom helper options
-        function quickFill(elementKey, text) {
-            let fieldLetter = '';
-            if (elementKey === 'context') fieldLetter = 'C';
-            if (elementKey === 'lens') fieldLetter = 'L';
-            if (elementKey === 'expectation') fieldLetter = 'E';
-            if (elementKey === 'audience') fieldLetter = 'A';
-            if (elementKey === 'format') fieldLetter = 'R';
-
-            if (fieldLetter) {
-                document.getElementById(`input-${fieldLetter}`).value = text;
+        function quickFill(key, text) {
+            const map = { context: 'C', lens: 'L', expectation: 'E', audience: 'A', format: 'R' };
+            const letter = map[key];
+            if (letter) {
+                document.getElementById(`input-${letter}`).value = text;
                 compilePrompt();
-                showToast(`Injected suggested ${elementKey} text!`, 'info');
+                showToast(`Quick-fill applied!`, 'info');
             }
         }
 
-        // Real-time calculation compilation
         function compilePrompt() {
-            const cVal = document.getElementById('input-C').value.trim();
-            const lVal = document.getElementById('input-L').value.trim();
-            const eVal = document.getElementById('input-E').value.trim();
-            const aVal = document.getElementById('input-A').value.trim();
-            const rVal = document.getElementById('input-R').value.trim();
+            const c = document.getElementById('input-C').value.trim();
+            const l = document.getElementById('input-L').value.trim();
+            const e = document.getElementById('input-E').value.trim();
+            const a = document.getElementById('input-A').value.trim();
+            const r = document.getElementById('input-R').value.trim();
+            const preview = document.getElementById('prompt-preview');
 
-            const previewEl = document.getElementById('prompt-preview');
-
-            if (!cVal && !lVal && !eVal && !aVal && !rVal) {
-                previewEl.innerHTML = `<span class="text-slate-400 italic">Start typing in the fields on the left or load one of the quick fill elements or worked examples below to view your fully structured prompt here in real-time...</span>`;
+            if (!c && !l && !e && !a && !r) {
+                preview.innerHTML = `<span class="text-slate-400 italic">Start typing in the fields on the left to view your fully structured prompt here in real-time...</span>`;
                 return;
             }
 
-            let promptStr = '';
-            if (cVal) promptStr += `[CONTEXT]\n${cVal}\n\n`;
-            if (lVal) promptStr += `[LENS]\n${lVal}\n\n`;
-            if (eVal) promptStr += `[EXPECTATION]\n${eVal}\n\n`;
-            if (aVal) promptStr += `[AUDIENCE]\n${aVal}\n\n`;
-            if (rVal) promptStr += `[RESULT FORMAT]\n${rVal}`;
+            let prompt = '';
+            if (c) prompt += `[CONTEXT]\n${c}\n\n`;
+            if (l) prompt += `[LENS]\n${l}\n\n`;
+            if (e) prompt += `[EXPECTATION]\n${e}\n\n`;
+            if (a) prompt += `[AUDIENCE]\n${a}\n\n`;
+            if (r) prompt += `[RESULT FORMAT]\n${r}`;
 
-            previewEl.textContent = promptStr;
+            preview.textContent = prompt;
             saveDraftToLocalStorage();
         }
 
-        // Copy Compiled Prompt to Clipboard with robust iframe fallback selection
         function copyToClipboard() {
-            const previewEl = document.getElementById('prompt-preview');
-            const text = previewEl.textContent;
-
-            if (!text || text.includes('Start typing in the fields')) {
-                showToast("Your workspace is empty! Write or load a prompt first.", "warning");
-                return;
-            }
-
-            copyTextDirectly(text);
-        }
-
-        // Helper clipboard algorithm for iframe context safety
-        function copyTextDirectly(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
+            const text = document.getElementById('prompt-preview').textContent;
+            if (!text || text.includes('Start typing')) { showToast("Workspace is empty! Write a prompt first.", "warning"); return; }
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
             try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast("Prompt copied to clipboard successfully!", "success");
-                } else {
-                    showToast("Copy failed, please select and copy text manually.", "error");
-                }
-            } catch (err) {
-                showToast("Failed to copy. Please manually select and copy text.", "error");
+                document.execCommand('copy');
+                showToast("Prompt copied to clipboard!", "success");
+            } catch {
+                showToast("Copy failed — please select and copy manually.", "error");
             }
-            document.body.removeChild(textarea);
+            document.body.removeChild(ta);
         }
 
         function downloadPromptFile() {
             const text = document.getElementById('prompt-preview').textContent;
-            if (!text || text.includes('Start typing in the fields')) {
-                showToast("Compile a prompt first before attempting download.", "warning");
-                return;
-            }
+            if (!text || text.includes('Start typing')) { showToast("Build a prompt first before downloading.", "warning"); return; }
             try {
                 const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
                 const link = document.createElement("a");
                 link.href = URL.createObjectURL(blob);
-                link.download = "EIL_CLEAR_Prompt_Template.txt";
+                link.download = "EIL_CLEAR_Prompt.txt";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                showToast("Downloaded prompt successfully as .txt file!", "success");
-            } catch (e) {
-                showToast("File generation failed in this browser context.", "error");
-            }
+                showToast("Downloaded prompt as .txt file!", "success");
+            } catch { showToast("Download failed in this browser context.", "error"); }
         }
 
         function saveDraftToLocalStorage() {
-            const draft = {
+            localStorage.setItem('eil_clear_prompt_draft', JSON.stringify({
                 c: document.getElementById('input-C').value,
                 l: document.getElementById('input-L').value,
                 e: document.getElementById('input-E').value,
                 a: document.getElementById('input-A').value,
                 r: document.getElementById('input-R').value
-            };
-            localStorage.setItem('eil_clear_prompt_draft', JSON.stringify(draft));
+            }));
         }
 
         function loadDraftFromLocalStorage() {
-            const savedDraft = localStorage.getItem('eil_clear_prompt_draft');
-            if (savedDraft) {
-                try {
-                    const draft = JSON.parse(savedDraft);
-                    let hasContent = false;
-                    if (draft.c) { document.getElementById('input-C').value = draft.c; hasContent = true; }
-                    if (draft.l) { document.getElementById('input-L').value = draft.l; hasContent = true; }
-                    if (draft.e) { document.getElementById('input-E').value = draft.e; hasContent = true; }
-                    if (draft.a) { document.getElementById('input-A').value = draft.a; hasContent = true; }
-                    if (draft.r) { document.getElementById('input-R').value = draft.r; hasContent = true; }
-                    if (hasContent) {
-                        compilePrompt();
-                        showToast("Restored your active prompt draft from previous session!", "info");
-                    }
-                } catch (e) {
-                    console.error("Draft parsing failed.", e);
-                }
-            }
+            const saved = localStorage.getItem('eil_clear_prompt_draft');
+            if (!saved) return;
+            try {
+                const d = JSON.parse(saved);
+                let has = false;
+                if (d.c) { document.getElementById('input-C').value = d.c; has = true; }
+                if (d.l) { document.getElementById('input-L').value = d.l; has = true; }
+                if (d.e) { document.getElementById('input-E').value = d.e; has = true; }
+                if (d.a) { document.getElementById('input-A').value = d.a; has = true; }
+                if (d.r) { document.getElementById('input-R').value = d.r; has = true; }
+                if (has) { compilePrompt(); showToast("Restored your previous draft!", "info"); }
+            } catch {}
         }
 
         function resetWorkspace() {
-            ['C', 'L', 'E', 'A', 'R'].forEach(l => {
-                document.getElementById(`input-${l}`).value = '';
-            });
+            ['C','L','E','A','R'].forEach(l => document.getElementById(`input-${l}`).value = '');
             compilePrompt();
             localStorage.removeItem('eil_clear_prompt_draft');
-            showToast("Cleared Creator Workspace successfully.", "info");
+            showToast("Workspace cleared.", "info");
         }
 
         const exampleDatabase = {
@@ -911,59 +839,34 @@
         };
 
         function loadWorkedExample(id) {
-            const data = exampleDatabase[id];
-            if (data) {
-                document.getElementById('input-C').value = data.c;
-                document.getElementById('input-L').value = data.l;
-                document.getElementById('input-E').value = data.e;
-                document.getElementById('input-A').value = data.a;
-                document.getElementById('input-R').value = data.r;
-                compilePrompt();
-                showToast(`Loaded Worked Example ${id} into Builder!`, 'success');
-                
-                document.getElementById('generator').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            const d = exampleDatabase[id];
+            if (!d) return;
+            document.getElementById('input-C').value = d.c;
+            document.getElementById('input-L').value = d.l;
+            document.getElementById('input-E').value = d.e;
+            document.getElementById('input-A').value = d.a;
+            document.getElementById('input-R').value = d.r;
+            compilePrompt();
+            showToast(`Loaded Example ${id} into Builder!`, 'success');
+            document.getElementById('generator').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            
-            let bgClass = 'bg-slate-900 border-slate-700';
-            let iconClass = 'fa-circle-info text-blue-400';
-            
-            if (type === 'success') {
-                bgClass = 'bg-indigo-950 border-[#FFD39C] text-[#FFD39C]';
-                iconClass = 'fa-circle-check text-[#FFD39C]';
-            } else if (type === 'error') {
-                bgClass = 'bg-rose-950 border-rose-900 text-rose-100';
-                iconClass = 'fa-circle-exclamation text-rose-400';
-            } else if (type === 'warning') {
-                bgClass = 'bg-amber-950 border-amber-900 text-amber-100';
-                iconClass = 'fa-triangle-exclamation text-amber-400';
-            } else if (type === 'info') {
-                bgClass = 'bg-indigo-950 border-indigo-900 text-indigo-100';
-                iconClass = 'fa-circle-info text-[#FFD39C]';
-            }
-
-            toast.className = `${bgClass} border p-4 rounded-2xl shadow-xl flex items-center space-x-3 text-xs font-semibold max-w-sm pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0`;
-            toast.innerHTML = `<i class="fa-solid ${iconClass} text-base flex-shrink-0"></i> <span>${message}</span>`;
-            
+            let bg = 'bg-slate-900 border-slate-700 text-white';
+            let icon = 'fa-circle-info text-blue-400';
+            if (type === 'success') { bg = 'bg-[#0F1E3D] border-[#FF6B3D] text-white'; icon = 'fa-circle-check text-[#FF6B3D]'; }
+            else if (type === 'error') { bg = 'bg-rose-950 border-rose-900 text-rose-100'; icon = 'fa-circle-exclamation text-rose-400'; }
+            else if (type === 'warning') { bg = 'bg-amber-950 border-amber-900 text-amber-100'; icon = 'fa-triangle-exclamation text-amber-400'; }
+            else if (type === 'info') { bg = 'bg-[#0F1E3D] border-[#0FA3A3] text-slate-100'; icon = 'fa-circle-info text-[#0FA3A3]'; }
+            toast.className = `${bg} border p-4 rounded-2xl shadow-xl flex items-center space-x-3 text-xs font-semibold max-w-sm pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-base flex-shrink-0"></i><span>${message}</span>`;
             container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.remove('translate-y-2', 'opacity-0');
-            }, 10);
-
-            setTimeout(() => {
-                toast.classList.add('translate-y-2', 'opacity-0');
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
-            }, 4500);
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => { toast.classList.add('translate-y-2', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 4500);
         }
 
-        // Initialize with Context accordion open and restore any saved draft
         window.onload = function() {
             toggleFrameworkAccordion('C');
             compilePrompt();
